@@ -76,7 +76,7 @@ const onSubmitNewPassword = async (e) => {
        <div className="flex items-center justify-center min-h-screen bg-gray-100">
   <div onClick={() => navigate('/')} className='cursor-pointer flex absolute top-3 sm:left-5 left-3'>
       {/* <img  src={assets.logo} alt='' className='w-24 sm:w-30 ' /> */}
-      <p className=' text-gray-800 font-semibold text-3xl sm:text-2xl pt-3'>Student_Reg.</p>
+      <p className=' text-gray-800 font-semibold text-3xl sm:text-2xl pt-3'>P.K Arts College</p>
       </div>
 
 {/* Enter email id */}

@@ -70,7 +70,7 @@ const sendVerificationOtp = async () => {
 
       <div onClick={() => navigate('/')} className='cursor-pointer flex absolute top-3 sm:left-5 left-3'>
         {/* <img  src={assets.logo} alt='' className='w-22 sm:w-25 ' /> */}
-        <p className=' text-gray-800 font-semibold text-3xl sm:text-2xl pt-3'>Student_Reg.</p>
+        <p className=' text-slate-90 font-semibold text-3xl sm:text-2xl pt-3'>P.K Arts College</p>
       </div>
        
       <div className='bg-slate-900 p-10 rounded-lg shadow-lg w-full sm:w-96 text-indigo-300 text-sm'>
