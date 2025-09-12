@@ -26,7 +26,7 @@ const { backendUrl, isLoggedin, userData, getUserData } = useContext(AppContent)
         if(data.success){
           toast.success(data.message)
           getUserData()
-          navigate('/');
+          navigate('/')
         }else{
           toast.error(data.message)
         }
@@ -66,8 +66,8 @@ useEffect(() => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     
 <div onClick={() => navigate('/')} className='cursor-pointer flex absolute top-3 sm:left-5 left-3'>
-      <img  src={assets.logo} alt='' className='w-22 sm:w-25 ' />
-      <span className='text-gray-800 font-semibold sm:text-4xl text-3xl sm:pt-8 pt-7'>MernAuth</span>
+      {/* <img  src={assets.logo} alt='' className='w-22 sm:w-25 ' /> */}
+      <p className=' text-gray-800 font-semibold text-3xl sm:text-2xl pt-3'>Student_Reg.</p>
       </div>
 
       <div className="max-w-md w-full rounded-2xl shadow-lg p-8 text-center bg-slate-900">

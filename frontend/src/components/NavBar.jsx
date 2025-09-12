@@ -42,8 +42,10 @@ const NavBar = () => {
   return (
     <div className='w-full flex justify-between items-center p-4 sm:p-4 sm:px-20 absolute top-0'>
 
-       <div className='flex items-center gap-2 sm:gap-1'>
-        <img src={assets.logo} alt="" className='w-25 sm:w-20' /><span className=' text-gray-800 font-semibold text-3xl sm:text-4xl pt-3'>MernAuth</span>
+       <div className='flex items-center'>
+        {/* <img src={assets.logo} alt="" className='w-25 sm:w-20' /><span className=' text-gray-800 font-semibold text-3xl sm:text-4xl pt-3'>Student_Registration</span> */}
+    
+       <p className=' text-gray-800 font-semibold text-3xl sm:text-2xl pt-3'>Student_Reg.</p>
         </div>
 
         { userData ? 
