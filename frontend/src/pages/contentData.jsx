@@ -1,18 +1,43 @@
-import React, { useRef } from 'react';
+import React, {useContext, useState} from 'react';
 import NavInsideBar from '../components/NavInsideBar';
+import { AppContent } from '../context/AppContext';
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const ContentData = () => {
+  axios.defaults.withCredentials = true;
   const [isHostelResident, setIsHostelResident] = React.useState(false);
 
+  const { backendUrl } = useContext(AppContent);
+  
   const handleHostelResidentChange = (e) => {
     setIsHostelResident(e.target.value === 'Yes');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target); // includes text + file fields automatically
+
+  try {
+    const { data } = await axios.post(
+      backendUrl + "/api/roles/students",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      }
+    );
+
+    data.success ? toast.success(data.message) : toast.error(data.message);
+
     e.target.reset();
     setIsHostelResident(false);
-  };
+  } catch (error) {
+    console.error("Error submitting student data:",error);
+    toast.error(error.response?.data?.message || error.message);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
@@ -22,7 +47,7 @@ const ContentData = () => {
         <p className="text-slate-500 mb-6">Fill in the details below</p>
         <form
           className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit} encType="multipart/form-data"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             <div>
@@ -121,11 +146,30 @@ const ContentData = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Upload Photo</label>
-              <input className="input input-bordered w-full" name="photo" type="file" required />
+              <input className="input input-bordered w-full" name="photo" type="file" accept="image/*"
+                required />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Course</label>
               <input className="input input-bordered w-full" name="course" placeholder="Course" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Blood Group</label>
+              <select className="input input-bordered w-full" name="bloodGroup" required>
+                <option value="">Select Blood Group</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>O+</option>
+                <option>O-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Scholarship Details</label>
+              <input className="input input-bordered w-full" name="scholarshipDetails" placeholder="Scholarship Details" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Year</label>
@@ -135,13 +179,13 @@ const ContentData = () => {
               <label className="block text-sm font-medium text-slate-700 mb-1">Hostel Resident?</label>
               <select
                 className="input input-bordered w-full"
-                name="hostelResident"
+                name="hosteller"
                 onChange={handleHostelResidentChange}
                 required
               >
                 <option value="">Select</option>
-                <option>Yes</option>
-                <option>No</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
               </select>
             </div>
             {isHostelResident && (
@@ -149,7 +193,7 @@ const ContentData = () => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Hostel Resident Detail</label>
                 <input
                   className="input input-bordered w-full"
-                  name="hostelResidentDetail"
+                  name="hostellerDetail"
                   placeholder="Hostel Resident Detail"
                   required
                 />
