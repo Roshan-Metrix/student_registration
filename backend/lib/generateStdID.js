@@ -10,7 +10,7 @@ async function generateStudentId(data) {
       [student_uid, data]
     );
 
-    console.log(`Student created with ID: ${student_uid}`);
+    // console.log(`Student created with ID: ${student_uid}`);
     return student_uid;
   } catch (error) {
     console.error('Error generating student id:', error);
