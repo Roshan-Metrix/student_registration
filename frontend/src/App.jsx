@@ -11,6 +11,8 @@ import ViewData from './pages/ViewData'
 import PrintData from './pages/PrintData'
 import TotalCalc from './pages/TotalCalc'
 import Setting from './pages/Setting'
+import ViewSingleStudent from './pages/ViewSingleStudent'
+import UpdateStudentData from './pages/UpdateStudentData'
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
         <Route path='/print' element={<PrintData/>}/>
         <Route path='/total' element={<TotalCalc/>}/>
         <Route path='/setting' element={<Setting/>}/>
+        <Route path='/student/:student_uid' element={<ViewSingleStudent/>}/>
+        <Route path='/student/edit/:student_uid' element={<UpdateStudentData/>}/>
       </Routes>
     </div>
   )
