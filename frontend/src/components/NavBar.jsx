@@ -22,28 +22,28 @@ const NavBar = () => {
     }
   }
 
-  const sendVerificationOtp = async () => {
-    try{
-       axios.defaults.withCredentials = true;
-       const { data } = await axios.post(backendUrl + '/api/auth/send-verify-otp')
+  // const sendVerificationOtp = async () => {
+  //   try{
+  //      axios.defaults.withCredentials = true;
+  //      const { data } = await axios.post(backendUrl + '/api/auth/send-verify-otp')
 
-       if(data.success){
-         navigate('/email-verify')
-         toast.success(data.message)
-       }else{
-        toast.error(data.message)
-       }
+  //      if(data.success){
+  //        navigate('/email-verify')
+  //        toast.success(data.message)
+  //      }else{
+  //       toast.error(data.message)
+  //      }
 
-    } catch(error){
-      toast.error(error.message)
-    }
-  }
+  //   } catch(error){
+  //     toast.error(error.message)
+  //   }
+  // }
 
   return (
     <div className='bg-slate-900 w-full flex justify-between sm:py-3 sm:px-5 items-center absolute top-0'>
 
        <div className='flex items-center'>
-        {/* <img src={assets.logo} alt="" className='w-25 sm:w-20' /><span className=' text-gray-800 font-semibold text-3xl sm:text-4xl pt-3'>Student_Registration</span> */}
+        {/* <img src={assets.logo} alt="" className='w-25 sm:w-20' />*/}
     
        <p className='text-white font-semibold text-3xl sm:text-2xl mx-5'>P.K Arts College</p>
         </div>
