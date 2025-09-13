@@ -10,9 +10,10 @@ import ContentData from './pages/contentData'
 import ViewData from './pages/ViewData'
 import PrintData from './pages/PrintData'
 import TotalCalc from './pages/TotalCalc'
-import Setting from './pages/Setting'
 import ViewSingleStudent from './pages/ViewSingleStudent'
 import UpdateStudentData from './pages/UpdateStudentData'
+import YearCategory from './pages/YearCategory'
+import UserProfile from './pages/UserProfile'
 
 const App = () => {
   return (
@@ -27,9 +28,10 @@ const App = () => {
         <Route path='/view' element={<ViewData/>}/>
         <Route path='/print' element={<PrintData/>}/>
         <Route path='/total' element={<TotalCalc/>}/>
-        <Route path='/setting' element={<Setting/>}/>
+        <Route path='/profile' element={<UserProfile/>}/>
         <Route path='/student/:student_uid' element={<ViewSingleStudent/>}/>
         <Route path='/student/edit/:student_uid' element={<UpdateStudentData/>}/>
+        <Route path='/total/:year' element={<YearCategory/>}/>
       </Routes>
     </div>
   )

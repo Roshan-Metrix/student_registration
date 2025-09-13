@@ -87,12 +87,12 @@ const UpdateStudentData = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
-      <div className="flex flex-col items-center pt-12">
+      <div className="flex flex-col items-center pt-10">
         <h2 className="text-3xl font-bold text-slate-800 mb-2">
           Edit Student Info
         </h2>
         <form
-          className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl"
+          className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl mb-10"
           onSubmit={handleSubmit}
           encType="multipart/form-data"
         >
@@ -110,6 +110,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
+         {/* Date Of Birth */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Date of Birth
@@ -119,6 +120,58 @@ const UpdateStudentData = () => {
                 name="dob"
                 type="date"
                 value={formData.dob ? formData.dob.split("T")[0] : ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {/* Father's Name */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Father's Name
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="fatherName"
+                value={formData.fatherName || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Father's Occupation */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Father's Occupation
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="fatherOccupation"
+                value={formData.fatherOccupation || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+              {/* Mother's Name */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Mother's Name
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="motherName"
+                value={formData.motherName || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Mother's Occupation */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Mother's Occupation
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="motherOccupation"
+                value={formData.motherOccupation || ""}
                 onChange={handleChange}
                 required
               />
@@ -136,6 +189,223 @@ const UpdateStudentData = () => {
                 onChange={handleChange}
                 required
               />
+            </div>
+            {/* Medium Of Instruction (12th std) */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Medium of Instruction (12th Std)
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="mediumOfInstruction"
+                value={formData.mediumOfInstruction || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Marks Scored */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Marks Scored
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="marksScored"
+                type="number"
+                value={formData.marksScored || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Percentage Scored */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Percentage
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="percentage"
+                type="number"
+                value={formData.percentage || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Gender */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Gender
+              </label>
+              <select
+                className="input input-bordered w-full"
+                name="category"
+                value={formData.gender || ""}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            {/* School Name & Place */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               School Name & Place
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="schoolNamePlace"
+                value={formData.schoolNamePlace || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {/* Religion */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Religion
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="religion"
+                value={formData.religion || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {/* Nationality */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Nationality
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="nationality"
+                value={formData.nationality || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Date Of Admission */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Date of Admission
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="dateOfAdmission"
+                type="date"
+                value={formData.dateOfAdmission ? formData.dateOfAdmission.split("T")[0] : ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Date Of Leaving */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Date of Leaving
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="dateOfLeaving"
+                type="date"
+                value={formData.dateOfLeaving ? formData.dateOfLeaving.split("T")[0] : ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Contact No. */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Contact No
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="contactNo"
+                type="tel"
+                value={formData.contactNo || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Aadhaar No. */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Aadhaar No
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="aadhaar"
+                value={formData.aadhaar || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {/* Address */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Address
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="address"
+                value={formData.address || ""}
+                onChange={handleChange}
+                required
+              />
+            </div>
+             {/* Blood Group */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Blood Group
+              </label>
+              <select
+                className="input input-bordered w-full"
+                name="bloodGroup"
+                value={formData.bloodGroup || ""}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Blood Group</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>O+</option>
+                <option>O-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+              </select>
+            </div>
+             {/* Year */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Year
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="year"
+                type="number"
+                min="1"
+                max="4"
+                value={formData.year || ""}
+                onChange={handleChange}
+                required
+              />
+              </div>
+             {/* Course */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Course
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="course"
+                value={formData.course || ""}
+                onChange={handleChange}
+                required
+              /> 
             </div>
             {/* Category */}
             <div>
@@ -158,6 +428,19 @@ const UpdateStudentData = () => {
                 <option>EBC</option>
                 <option>SC</option>
               </select>
+            </div>
+            {/* Scholarship Details */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+               Scholarship Details
+              </label>
+              <input
+                className="input input-bordered w-full"
+                name="scholarshipDetails"
+                value={formData.scholarshipDetails || ""}
+                onChange={handleChange}
+                required
+              />
             </div>
             {/* Hostel */}
             <div>
@@ -214,7 +497,7 @@ const UpdateStudentData = () => {
           </div>
           <button
             type="submit"
-            className="mt-8 w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition"
+            className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-700 transition cursor-pointer"
           >
             Update Student
           </button>

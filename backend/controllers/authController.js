@@ -54,7 +54,7 @@ export const registerUser = async (req, res) => {
         return res.json({ success: true,message: 'User registered successfully' });
 
     } catch (error) {
-        console.error('Error during user registration:', error);
+        console.error('Error in registerUser controller:', error);
         res.json({ success: false, message: error.message });
     }
 }

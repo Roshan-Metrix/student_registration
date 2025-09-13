@@ -42,11 +42,11 @@ const ContentData = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
-      <div className="flex flex-col items-center pt-12">
+      <div className="flex flex-col items-center pt-6">
         <h2 className="text-3xl font-bold text-slate-800 mb-2">Student Info</h2>
         <p className="text-slate-500 mb-6">Fill in the details below</p>
         <form
-          className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl"
+          className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl mb-10"
           onSubmit={handleSubmit} encType="multipart/form-data"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -141,7 +141,6 @@ const ContentData = () => {
                 <option value="">Select Gender</option>
                 <option>Male</option>
                 <option>Female</option>
-                <option>Other</option>
               </select>
             </div>
             <div>
@@ -173,7 +172,7 @@ const ContentData = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Year</label>
-              <input className="input input-bordered w-full" name="year" type="number" placeholder="Year" required />
+              <input className="input input-bordered w-full" name="year" type="number" placeholder="1-4" min="1" max="4" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Hostel Resident?</label>
@@ -204,7 +203,7 @@ const ContentData = () => {
             type="submit"
             className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition"
           >
-            Submit
+            Add
           </button>
         </form>
       </div>

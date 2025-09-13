@@ -8,6 +8,7 @@ import createDB from './config/connection.js';
 import authRouter from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js';
 import roleRouter from './routes/roleRoutes.js';
+import filterRouter from './routes/filterRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/upload',express.static(path.join(__dirname, "uploads")));
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/roles',roleRouter)
+app.use('/api/filter',filterRouter)
 
 app.listen(port,() => {
     console.log(`Server is running at ${port}`)

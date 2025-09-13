@@ -18,7 +18,7 @@ const Header = () => {
           <img className='w-8 aspect-square' src={assets.hand_wave} alt='' />
         </h1>
 
-        <h2 className='text-3xl sm:text-3xl  font-semibold mb-4'>Welcome To Student Registration </h2>
+        <h2 className='text-3xl sm:text-3xl  font-semibold mb-4'>Welcome To Student Management</h2>
 
         <p className='mb-8 max-w-md'>Login and start managing your students effectively!</p>
 
