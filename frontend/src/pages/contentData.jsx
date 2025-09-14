@@ -396,7 +396,7 @@ const ContentData = () => {
           </div>
           <button
             type="submit"
-            className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition"
+            className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer"
           >
             Add
           </button>
