@@ -2,4 +2,5 @@ node_modules/
 
 .env
 
-backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
