@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // // import React, { useContext, useState } from "react";
 // // import { assets } from "../assets/assets";
 // // import { useNavigate } from "react-router-dom";
@@ -199,6 +200,8 @@
 
 // // export default ResetPassword;
 
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 // import React, { useContext, useState } from "react";
 // import { assets } from "../assets/assets";
 // import { useNavigate } from "react-router-dom";
@@ -213,10 +216,18 @@
 //   const navigate = useNavigate();
 //   const [email, setEmail] = useState("");
 //   const [newPassword, setNewPassword] = useState("");
+<<<<<<< HEAD
 //   const [isEmailSent, setIsEmailSent] = useState(false);
 //   const [otp, setOtp] = useState(0);
 //   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
 
+=======
+//   const [isEmailSent, setIsEmailSent] = useState("");
+//   const [otp, setOtp] = useState(0);
+//   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
+
+//   // handling input otp
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //   const inputRefs = React.useRef([]);
 
 //   const handleInput = (e, index) => {
@@ -249,7 +260,11 @@
 //         { email }
 //       );
 //       data.success ? toast.success(data.message) : toast.error(data.message);
+<<<<<<< HEAD
 //       if (data.success) setIsEmailSent(true);
+=======
+//       data.success && setIsEmailSent(true);
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //     } catch (error) {
 //       toast.error(error.message);
 //     }
@@ -270,13 +285,18 @@
 //         { email, otp, newPassword }
 //       );
 //       data.success ? toast.success(data.message) : toast.error(data.message);
+<<<<<<< HEAD
 //       if (data.success) navigate("/login");
+=======
+//       data.success && navigate("/login");
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //     } catch (error) {
 //       toast.error(error.message);
 //     }
 //   };
 
 //   return (
+<<<<<<< HEAD
 //     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300">
 //       {/* Top Navbar */}
 //       <div className="absolute top-0 left-0 right-0 bg-slate-900 py-4 px-6 flex items-center justify-between shadow-lg">
@@ -309,18 +329,58 @@
 //                 onChange={(e) => setEmail(e.target.value)}
 //                 required
 //                 className="bg-transparent outline-none flex-1 text-slate-800 placeholder-slate-400"
+=======
+//     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+//       <div className="bg-slate-900 w-full flex justify-between sm:py-3 sm:px-5 items-center absolute top-0">
+//         <div onClick={() => navigate("/")} className="flex items-center cursor-pointer">
+//           {/* <img src={assets.logo} alt="" className='w-25 sm:w-20' />*/}
+
+//           <p className="text-white font-semibold text-3xl sm:text-2xl mx-5">
+//             P.K Arts College
+//           </p>
+//         </div>
+//       </div>
+
+//       {/* Enter email id */}
+//       {!isEmailSent && (
+//         <div className="max-w-md w-full rounded-2xl shadow-lg p-8 text-center bg-slate-900">
+//           <h2 className="text-3xl font-bold mb-3 text-gray-200">
+//             Reset Password
+//           </h2>
+//           <p className="text-gray-400 mb-7">
+//             Enter the registered email address
+//           </p>
+
+//           <form onSubmit={onSubmitEmail} className="flex flex-col items-center">
+//             <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+//               <img src={assets.mail_icon} alt="" className="w-4 h-4" />
+//               <input
+//                 type="email"
+//                 placeholder="Email id"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 required
+//                 className="bg-transparent outline-none text-white"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //               />
 //             </div>
 //             <button
 //               type="submit"
+<<<<<<< HEAD
 //               className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
 //             >
 //               Send OTP
+=======
+//               className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-medium py-2.5 rounded-lg w-full shadow hover:from-blue-700 hover:to-blue-500 transition cursor-pointer"
+//             >
+//               Submit
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //             </button>
 //           </form>
 //         </div>
 //       )}
 
+<<<<<<< HEAD
 //       {/* Step 2: Enter OTP */}
 //       {!isOtpSubmitted && isEmailSent && (
 //         <div className="max-w-md w-full rounded-2xl shadow-2xl p-8 text-center bg-white mt-20">
@@ -330,6 +390,16 @@
 //           <p className="text-slate-600 mb-7">
 //             Enter the <span className="font-semibold">6-digit OTP</span> sent to
 //             your email
+=======
+//       {/* For adding otp */}
+//       {!isOtpSubmitted && isEmailSent && (
+//         <div className="max-w-md w-full rounded-2xl shadow-lg p-8 text-center bg-slate-900">
+//           <h2 className="text-3xl font-bold mb-3 text-gray-200">
+//             Reset Password OTP
+//           </h2>
+//           <p className="text-gray-400 mb-7">
+//             Enter the 6-digit OTP sent to your email
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //           </p>
 
 //           <form onSubmit={onSubmitOTP} className="flex flex-col items-center">
@@ -349,20 +419,31 @@
 //                     ref={(e) => (inputRefs.current[index] = e)}
 //                     onInput={(e) => handleInput(e, index)}
 //                     onKeyDown={(e) => handleKeyDown(e, index)}
+<<<<<<< HEAD
 //                     className="w-12 h-14 text-2xl font-semibold text-center border-2 border-slate-300 rounded-lg outline-none bg-slate-50 focus:border-indigo-600 focus:bg-white transition shadow-sm"
+=======
+//                     className="w-12 h-14 text-2xl text-center border-2 border-gray-300 rounded-lg outline-none bg-gray-100 focus:border-blue-500 focus:bg-white transition"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //                   />
 //                 ))}
 //             </div>
 //             <button
 //               type="submit"
+<<<<<<< HEAD
 //               className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
 //             >
 //               Verify OTP
+=======
+//               className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-medium py-2.5 rounded-lg w-full shadow hover:from-blue-700 hover:to-blue-500 transition cursor-pointer"
+//             >
+//               Submit
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //             </button>
 //           </form>
 //         </div>
 //       )}
 
+<<<<<<< HEAD
 //       {/* Step 3: Enter New Password */}
 //       {isOtpSubmitted && isEmailSent && (
 //         <div className="max-w-md w-full rounded-2xl shadow-2xl p-8 text-center bg-white mt-20">
@@ -372,11 +453,21 @@
 //           <p className="text-slate-600 mb-7">
 //             Enter your new password below to reset
 //           </p>
+=======
+//       {/* Enter new password */}
+//       {isOtpSubmitted && isEmailSent && (
+//         <div className="max-w-md w-full rounded-2xl shadow-lg p-8 text-center bg-slate-900">
+//           <h2 className="text-3xl font-bold mb-3 text-gray-200">
+//             New Password
+//           </h2>
+//           <p className="text-gray-400 mb-7">Enter the new password below</p>
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 
 //           <form
 //             onSubmit={onSubmitNewPassword}
 //             className="flex flex-col items-center"
 //           >
+<<<<<<< HEAD
 //             <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full border border-slate-300 bg-slate-50 focus-within:ring-2 focus-within:ring-indigo-500">
 //               <img src={assets.lock_icon} alt="" className="w-5 h-5" />
 //               <input
@@ -386,13 +477,30 @@
 //                 onChange={(e) => setNewPassword(e.target.value)}
 //                 required
 //                 className="bg-transparent outline-none flex-1 text-slate-800 placeholder-slate-400"
+=======
+//             <div className="mb-4 flex items-center gap-3 w-full px-5 py-2.5 rounded-full bg-[#333A5C]">
+//               <img src={assets.lock_icon} alt="" className="w-4 h-4" />
+//               <input
+//                 type="password"
+//                 placeholder="Password"
+//                 value={newPassword}
+//                 onChange={(e) => setNewPassword(e.target.value)}
+//                 required
+//                 className="bg-transparent outline-none text-white"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //               />
 //             </div>
 //             <button
 //               type="submit"
+<<<<<<< HEAD
 //               className="bg-gradient-to-r from-green-600 to-green-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-green-500 hover:to-green-700 transition cursor-pointer"
 //             >
 //               Reset Password
+=======
+//               className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-medium py-2.5 rounded-lg w-full shadow hover:from-blue-700 hover:to-blue-500 transition cursor-pointer"
+//             >
+//               Submit
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 //             </button>
 //           </form>
 //         </div>
@@ -403,7 +511,10 @@
 
 // export default ResetPassword;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
 import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
@@ -419,11 +530,17 @@ const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isEmailSent, setIsEmailSent] = useState(false);
+<<<<<<< HEAD
   const [otp, setOtp] = useState("");
   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
 
   const [loading, setLoading] = useState(false); // ⬅️ NEW
 
+=======
+  const [otp, setOtp] = useState(0);
+  const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
+
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
   const inputRefs = React.useRef([]);
 
   const handleInput = (e, index) => {
@@ -451,7 +568,10 @@ const ResetPassword = () => {
   const onSubmitEmail = async (e) => {
     e.preventDefault();
     try {
+<<<<<<< HEAD
       setLoading(true);
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
       const { data } = await axios.post(
         backendUrl + "/api/auth/send-reset-otp",
         { email }
@@ -460,8 +580,11 @@ const ResetPassword = () => {
       if (data.success) setIsEmailSent(true);
     } catch (error) {
       toast.error(error.message);
+<<<<<<< HEAD
     } finally {
       setLoading(false);
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
     }
   };
 
@@ -475,7 +598,10 @@ const ResetPassword = () => {
   const onSubmitNewPassword = async (e) => {
     e.preventDefault();
     try {
+<<<<<<< HEAD
       setLoading(true);
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
       const { data } = await axios.post(
         backendUrl + "/api/auth/reset-password",
         { email, otp, newPassword }
@@ -484,12 +610,16 @@ const ResetPassword = () => {
       if (data.success) navigate("/login");
     } catch (error) {
       toast.error(error.message);
+<<<<<<< HEAD
     } finally {
       setLoading(false);
+=======
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
     }
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 relative">
       {/* Loading Overlay */}
       {loading && (
@@ -499,6 +629,9 @@ const ResetPassword = () => {
         </div>
       )}
 
+=======
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300">
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
       {/* Top Navbar */}
       <div className="absolute top-0 left-0 right-0 bg-slate-900 py-4 px-6 flex items-center justify-between shadow-lg">
         <div
@@ -534,8 +667,12 @@ const ResetPassword = () => {
             </div>
             <button
               type="submit"
+<<<<<<< HEAD
               disabled={loading}
               className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer disabled:opacity-50"
+=======
+              className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
             >
               Send OTP
             </button>
@@ -546,7 +683,13 @@ const ResetPassword = () => {
       {/* Step 2: Enter OTP */}
       {!isOtpSubmitted && isEmailSent && (
         <div className="max-w-md w-full rounded-2xl shadow-2xl p-8 text-center bg-white mt-20">
+<<<<<<< HEAD
           <h2 className="text-3xl font-bold mb-3 text-slate-900">Verify OTP</h2>
+=======
+          <h2 className="text-3xl font-bold mb-3 text-slate-900">
+            Verify OTP
+          </h2>
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
           <p className="text-slate-600 mb-7">
             Enter the <span className="font-semibold">6-digit OTP</span> sent to
             your email
@@ -575,8 +718,12 @@ const ResetPassword = () => {
             </div>
             <button
               type="submit"
+<<<<<<< HEAD
               disabled={loading}
               className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer disabled:opacity-50"
+=======
+              className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
             >
               Verify OTP
             </button>
@@ -611,8 +758,12 @@ const ResetPassword = () => {
             </div>
             <button
               type="submit"
+<<<<<<< HEAD
               disabled={loading}
               className="bg-gradient-to-r from-green-600 to-green-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-green-500 hover:to-green-700 transition cursor-pointer disabled:opacity-50"
+=======
+              className="bg-gradient-to-r from-green-600 to-green-800 text-white text-lg font-semibold py-3 rounded-lg w-full shadow-md hover:from-green-500 hover:to-green-700 transition cursor-pointer"
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
             >
               Reset Password
             </button>

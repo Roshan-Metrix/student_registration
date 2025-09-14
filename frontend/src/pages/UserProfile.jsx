@@ -54,10 +54,17 @@ const UserProfile = () => {
       return;
     }
     try {
+<<<<<<< HEAD
       const { data } = await axios.delete(`${backendUrl}/api/auth/user/delete`, { withCredentials: true });
       if (data.success) {
         toast.success("Account deleted successfully");
         navigate("/");
+=======
+      const { data } = await axios.delete(`${backendUrl}/api/user/delete`, { withCredentials: true });
+      if (data.success) {
+        toast.success("Account deleted successfully");
+        navigate("/signup");
+>>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
       } else {
         toast.error(data.message);
       }
