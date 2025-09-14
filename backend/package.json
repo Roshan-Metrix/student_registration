@@ -1,0 +1,28 @@
+{
+  "name": "mern_authentication",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js  --host 0.0.0.0",
+    "server": "nodemon server.js  --host 0.0.0.0"
+  },
+  "keywords": [],
+  "author": "Roshan Patel",
+  "license": "ISC",
+  "description": "A college project",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.5",
+    "nodemailer": "^7.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
