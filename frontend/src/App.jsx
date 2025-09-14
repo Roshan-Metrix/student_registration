@@ -1,9 +1,6 @@
 import React from 'react'
 import { Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
-import Login from './pages/Login'
-import EmailVerify from './pages/EmailVerify'
-import ResetPassword from './pages/ResetPassword'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContentData from './pages/contentData'
@@ -14,6 +11,9 @@ import ViewSingleStudent from './pages/ViewSingleStudent'
 import UpdateStudentData from './pages/UpdateStudentData'
 import YearCategory from './pages/YearCategory'
 import UserProfile from './pages/UserProfile'
+import EmailVerify from './pages/authPages/EmailVerify'
+import Login from './pages/authPages/Login';
+import ResetPassword from './pages/authPages/ResetPassword';
 
 const App = () => {
   return (
