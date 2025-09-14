@@ -95,11 +95,7 @@ const ViewSingleStudent = () => {
           Student Details
         </h2>
         <p className="text-slate-500 mb-6">
-<<<<<<< HEAD
           Detailed record for <span className="font-semibold">{student.name}</span>
-=======
-          Detailed record for {student.name}
->>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
         </p>
 
         {/* Download Button */}

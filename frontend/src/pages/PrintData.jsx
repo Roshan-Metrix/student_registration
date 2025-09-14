@@ -112,11 +112,7 @@ const PrintData = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-slate-800">
-<<<<<<< HEAD
             Filter Student Datas
-=======
-            Print Student Data
->>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
           </h2>
           <button
             onClick={downloadPDF}

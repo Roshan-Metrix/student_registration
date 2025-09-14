@@ -67,13 +67,9 @@ const ViewData = () => {
 
   // Search filter
   const filteredStudents = students.filter((student) =>
-<<<<<<< HEAD
     student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.student_uid.toLowerCase().includes(searchQuery.toLowerCase()) ||
     student.email.toLowerCase().includes(searchQuery.toLowerCase())
-=======
-    student.name.toLowerCase().includes(searchQuery.toLowerCase())
->>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
   );
 
   // Pagination logic
@@ -102,11 +98,7 @@ const ViewData = () => {
             </span>
             <input
               type="text"
-<<<<<<< HEAD
               placeholder="Search by name, email or UID..."
-=======
-              placeholder="Search by name..."
->>>>>>> e87781ca56b4ef120b138ba52d5bb9b5634791cc
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
