@@ -394,18 +394,25 @@ const UpdateStudentData = () => {
                 required
               />
               </div>
-             {/* Course */}
-            <div>
+            {/* Courses */}
+             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Course
+                Courses
               </label>
-              <input
+              <select
                 className="input input-bordered w-full"
                 name="course"
                 value={formData.course || ""}
                 onChange={handleChange}
                 required
-              /> 
+              >
+                <option value="">Select Course</option>
+                <option>B.A (Tamil)</option>
+                <option>B.Sc (Mathematics)</option>
+                <option>B.B.A (Tourism)</option>
+                <option>B.C.A (Computer Applications)</option>
+                <option>B.Com</option>
+              </select>
             </div>
             {/* Category */}
             <div>

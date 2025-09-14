@@ -42,42 +42,49 @@ const PrintData = () => {
   const uniqueCourses = [...new Set(students.map((s) => s.course))];
 
   // Filtering logic
-  useEffect(() => {
-    let filtered = students;
+useEffect(() => {
+  let filtered = students;
 
-    // Search
-    if (searchQuery) {
-      const lower = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (s) =>
-          s.name.toLowerCase().includes(lower) ||
-          s.email.toLowerCase().includes(lower) ||
-          s.student_uid.toLowerCase().includes(lower)
-      );
-    }
+  // Multi-search
+  if (searchQuery) {
+    const searchTerms = searchQuery
+      .split(",") // split by comma
+      .map((term) => term.trim().toLowerCase()) // clean terms
+      .filter((term) => term.length > 0);
 
-    // Category
-    if (categoryFilter) {
-      filtered = filtered.filter((s) => s.category === categoryFilter);
-    }
+    filtered = filtered.filter((s) =>
+      searchTerms.some(
+        (term) =>
+          s.name.toLowerCase().includes(term) ||
+          s.email.toLowerCase().includes(term) ||
+          s.student_uid.toLowerCase().includes(term)
+      )
+    );
+  }
 
-    // Year
-    if (yearFilter) {
-      filtered = filtered.filter((s) => String(s.year) === yearFilter);
-    }
+  // Category
+  if (categoryFilter) {
+    filtered = filtered.filter((s) => s.category === categoryFilter);
+  }
 
-    // Course
-    if (courseFilter) {
-      filtered = filtered.filter((s) => s.course === courseFilter);
-    }
+  // Year
+  if (yearFilter) {
+    filtered = filtered.filter((s) => String(s.year) === yearFilter);
+  }
 
-    // Hosteller
-    if (hostellerFilter) {
-      filtered = filtered.filter((s) => s.hosteller === hostellerFilter);
-    }
+  // Course
+  if (courseFilter) {
+    filtered = filtered.filter((s) => s.course === courseFilter);
+  }
 
-    setFilteredStudents(filtered);
-  }, [searchQuery, categoryFilter, yearFilter, courseFilter, hostellerFilter, students]);
+  // Hosteller
+  if (hostellerFilter) {
+    filtered = filtered.filter((s) => s.hosteller === hostellerFilter);
+  }
+
+  setFilteredStudents(filtered);
+}, [searchQuery, categoryFilter, yearFilter, courseFilter, hostellerFilter, students]);
+
 
   // Download filtered data as PDF
   const downloadPDF = () => {
@@ -112,7 +119,7 @@ const PrintData = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-slate-800">
-            Filter Student Datas
+            Filter Students Datas
           </h2>
           <button
             onClick={downloadPDF}
