@@ -13,8 +13,7 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false); // <-- NEW
+  const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
     try {
@@ -30,7 +29,6 @@ const Login = () => {
 
         if (data.success) {
           setIsLoggedin(true);
-          // Send OTP after registration
           await sendVerificationOtp();
         } else {
           toast.error(data.message);
@@ -56,7 +54,7 @@ const Login = () => {
 
   const sendVerificationOtp = async () => {
     try {
-      setLoading(true); // show loader
+      setLoading(true);
       axios.defaults.withCredentials = true;
 
       const { data } = await axios.post(
@@ -72,46 +70,48 @@ const Login = () => {
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false); // hide loader
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 px-4 relative">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 px-4 sm:px-6 relative">
       {/* Loading Overlay */}
       {loading && (
         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
-          <div className="w-14 h-14 border-4 border-white border-t-indigo-500 rounded-full animate-spin"></div>
-          <p className="mt-4 text-white font-medium">Sending OTP...</p>
+          <div className="w-12 h-12 sm:w-14 sm:h-14 border-4 border-white border-t-indigo-500 rounded-full animate-spin"></div>
+          <p className="mt-3 sm:mt-4 text-white font-medium text-sm sm:text-base">
+            Sending OTP...
+          </p>
         </div>
       )}
 
       {/* Top Nav */}
-      <div className="absolute top-0 left-0 right-0 bg-slate-900 py-4 px-6 flex items-center justify-between shadow-lg">
+      <div className="absolute top-0 left-0 right-0 bg-slate-900 py-3 sm:py-4 px-4 sm:px-6 flex items-center justify-between shadow-lg">
         <div
           onClick={() => navigate("/")}
-          className="text-white font-semibold text-2xl sm:text-3xl cursor-pointer"
+          className="text-white font-semibold text-xl sm:text-2xl md:text-3xl cursor-pointer"
         >
           P.K Arts College
         </div>
       </div>
 
       {/* Auth Card */}
-      <div className="bg-white shadow-2xl rounded-2xl p-8 sm:p-10 w-full max-w-md mt-20 relative z-10">
-        <h2 className="text-3xl font-bold text-center text-slate-900 mb-2">
+      <div className="bg-white shadow-2xl rounded-2xl p-6 sm:p-10 w-full max-w-md mt-24 sm:mt-28 relative z-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 mb-2">
           {state === "Sign Up" ? "Create Account" : "Welcome Back"}
         </h2>
-        <p className="text-slate-500 text-center mb-6 ">
+        <p className="text-slate-500 text-center mb-6 text-sm sm:text-base">
           {state === "Sign Up" ? "Sign up to get started" : "Login to continue"}
         </p>
 
         <form onSubmit={onSubmitHandler}>
           {state === "Sign Up" && (
             <div className="mb-4">
-              <div className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg bg-slate-100 border border-slate-300">
+              <div className="flex items-center gap-3 w-full px-4 py-2 sm:py-2.5 rounded-lg bg-slate-100 border border-slate-300">
                 <img src={assets.person_icon} alt="" className="w-5 h-5" />
                 <input
-                  className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400"
+                  className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                   type="text"
@@ -122,11 +122,12 @@ const Login = () => {
             </div>
           )}
 
+          {/* Email */}
           <div className="mb-4">
-            <div className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg bg-slate-100 border border-slate-300">
+            <div className="flex items-center gap-3 w-full px-4 py-2 sm:py-2.5 rounded-lg bg-slate-100 border border-slate-300">
               <img src={assets.mail_icon} alt="" className="w-5 h-5" />
               <input
-                className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400"
+                className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base"
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -136,11 +137,12 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Password */}
           <div className="mb-4">
-            <div className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg bg-slate-100 border border-slate-300">
+            <div className="flex items-center gap-3 w-full px-4 py-2 sm:py-2.5 rounded-lg bg-slate-100 border border-slate-300">
               <img src={assets.lock_icon} alt="" className="w-5 h-5" />
               <input
-                className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400"
+                className="bg-transparent flex-1 outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base"
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -150,25 +152,28 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Forgot Password */}
           {state === "Login" && (
             <p
               onClick={() => navigate("/reset-password")}
-              className="mb-4 text-sm text-indigo-600 cursor-pointer hover:underline text-right"
+              className="mb-4 text-xs sm:text-sm text-indigo-600 cursor-pointer hover:underline text-right"
             >
               Forgot Password?
             </p>
           )}
 
+          {/* Submit */}
           <button
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-semibold text-lg shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
-            disabled={loading} // disable while loading
+            className="w-full py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-semibold text-base sm:text-lg shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
+            disabled={loading}
           >
             {loading ? "Processing..." : state}
           </button>
         </form>
 
+        {/* Toggle Login/Signup */}
         {state === "Sign Up" ? (
-          <p className="text-slate-600 text-center text-sm mt-6">
+          <p className="text-slate-600 text-center text-xs sm:text-sm mt-6">
             Already have an account?{" "}
             <span
               onClick={() => setState("Login")}
@@ -178,7 +183,7 @@ const Login = () => {
             </span>
           </p>
         ) : (
-          <p className="text-slate-600 text-center text-sm mt-6">
+          <p className="text-slate-600 text-center text-xs sm:text-sm mt-6">
             Don’t have an account?{" "}
             <span
               onClick={() => setState("Sign Up")}

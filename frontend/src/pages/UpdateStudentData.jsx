@@ -12,6 +12,7 @@ const UpdateStudentData = () => {
 
   const [formData, setFormData] = useState({});
   const [isHostelResident, setIsHostelResident] = useState(false);
+  const [newPhoto, setNewPhoto] = useState(null);
 
   axios.defaults.withCredentials = true;
 
@@ -56,15 +57,17 @@ const UpdateStudentData = () => {
     e.preventDefault();
 
     const updatedFormData = new FormData();
+
+    // Append all text fields EXCEPT photo
     Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
+      if (key !== "photo" && value !== null && value !== undefined) {
         updatedFormData.append(key, value);
       }
     });
 
-    // Only add new photo if selected
-    if (e.target.photo.files[0]) {
-      updatedFormData.set("photo", e.target.photo.files[0]);
+    // Append new photo if selected
+    if (newPhoto) {
+      updatedFormData.append("photo", newPhoto);
     }
 
     try {
@@ -110,7 +113,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-         {/* Date Of Birth */}
+            {/* Date Of Birth */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Date of Birth
@@ -137,7 +140,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Father's Occupation */}
+            {/* Father's Occupation */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Father's Occupation
@@ -150,7 +153,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-              {/* Mother's Name */}
+            {/* Mother's Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Mother's Name
@@ -163,7 +166,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Mother's Occupation */}
+            {/* Mother's Occupation */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Mother's Occupation
@@ -193,7 +196,7 @@ const UpdateStudentData = () => {
             {/* Medium Of Instruction (12th std) */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Medium of Instruction (12th Std)
+                Medium of Instruction (12th Std)
               </label>
               <input
                 className="input input-bordered w-full"
@@ -203,10 +206,10 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Marks Scored */}
+            {/* Marks Scored */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Marks Scored
+                Marks Scored
               </label>
               <input
                 className="input input-bordered w-full"
@@ -217,10 +220,10 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Percentage Scored */}
+            {/* Percentage Scored */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Percentage
+                Percentage
               </label>
               <input
                 className="input input-bordered w-full"
@@ -231,7 +234,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Gender */}
+            {/* Gender */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Gender
@@ -251,7 +254,7 @@ const UpdateStudentData = () => {
             {/* School Name & Place */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               School Name & Place
+                School Name & Place
               </label>
               <input
                 className="input input-bordered w-full"
@@ -264,7 +267,7 @@ const UpdateStudentData = () => {
             {/* Religion */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Religion
+                Religion
               </label>
               <input
                 className="input input-bordered w-full"
@@ -277,7 +280,7 @@ const UpdateStudentData = () => {
             {/* Nationality */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Nationality
+                Nationality
               </label>
               <input
                 className="input input-bordered w-full"
@@ -287,7 +290,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Date Of Admission */}
+            {/* Date Of Admission */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Date of Admission
@@ -296,12 +299,16 @@ const UpdateStudentData = () => {
                 className="input input-bordered w-full"
                 name="dateOfAdmission"
                 type="date"
-                value={formData.dateOfAdmission ? formData.dateOfAdmission.split("T")[0] : ""}
+                value={
+                  formData.dateOfAdmission
+                    ? formData.dateOfAdmission.split("T")[0]
+                    : ""
+                }
                 onChange={handleChange}
                 required
               />
             </div>
-             {/* Date Of Leaving */}
+            {/* Date Of Leaving */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Date of Leaving
@@ -310,15 +317,19 @@ const UpdateStudentData = () => {
                 className="input input-bordered w-full"
                 name="dateOfLeaving"
                 type="date"
-                value={formData.dateOfLeaving ? formData.dateOfLeaving.split("T")[0] : ""}
+                value={
+                  formData.dateOfLeaving
+                    ? formData.dateOfLeaving.split("T")[0]
+                    : ""
+                }
                 onChange={handleChange}
                 required
               />
             </div>
-             {/* Contact No. */}
+            {/* Contact No. */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Contact No
+                Contact No
               </label>
               <input
                 className="input input-bordered w-full"
@@ -329,10 +340,10 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Aadhaar No. */}
+            {/* Aadhaar No. */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Aadhaar No
+                Aadhaar No
               </label>
               <input
                 className="input input-bordered w-full"
@@ -345,7 +356,7 @@ const UpdateStudentData = () => {
             {/* Address */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Address
+                Address
               </label>
               <input
                 className="input input-bordered w-full"
@@ -355,7 +366,7 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-             {/* Blood Group */}
+            {/* Blood Group */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Blood Group
@@ -378,10 +389,10 @@ const UpdateStudentData = () => {
                 <option>AB-</option>
               </select>
             </div>
-             {/* Year */}
+            {/* Year */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Year
+                Year
               </label>
               <input
                 className="input input-bordered w-full"
@@ -393,9 +404,9 @@ const UpdateStudentData = () => {
                 onChange={handleChange}
                 required
               />
-              </div>
+            </div>
             {/* Courses */}
-             <div>
+            <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Courses
               </label>
@@ -439,7 +450,7 @@ const UpdateStudentData = () => {
             {/* Scholarship Details */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-               Scholarship Details
+                Scholarship Details
               </label>
               <input
                 className="input input-bordered w-full"
@@ -499,6 +510,8 @@ const UpdateStudentData = () => {
                 className="input input-bordered w-full"
                 name="photo"
                 type="file"
+                accept="image/*"
+                onChange={(e) => setNewPhoto(e.target.files[0])}
               />
             </div>
           </div>

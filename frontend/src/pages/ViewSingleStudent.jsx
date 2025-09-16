@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import NavInsideBar from "../components/NavInsideBar";
 import { AppContent } from "../context/AppContext";
@@ -34,8 +33,16 @@ const ViewSingleStudent = () => {
 
   const downloadPDF = () => {
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Student Details", 14, 20);
+    doc.setFontSize(14);
+    doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 20, {
+      align: "center",
+    });
+    doc.setFontSize(12);
+    doc.text("Department of Commerce", 105, 28, { align: "center" });
+    doc.setFontSize(13);
+    doc.text("STUDENTS PROFILE", 105, 38, { align: "center" });
+    // doc.setFontSize(16);
+    // doc.text("Student Details", 14, 20);
 
     const details = [
       ["Student UID", student.student_uid],
@@ -95,7 +102,8 @@ const ViewSingleStudent = () => {
           Student Details
         </h2>
         <p className="text-slate-500 mb-6">
-          Detailed record for <span className="font-semibold">{student.name}</span>
+          Detailed record for{" "}
+          <span className="font-semibold">{student.name}</span>
         </p>
 
         {/* Download Button */}
