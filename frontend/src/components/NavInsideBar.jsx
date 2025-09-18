@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const NavInsideBar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const navItems = [
@@ -14,7 +15,7 @@ const NavInsideBar = () => {
     { label: "Profile", path: "/profile" },
   ];
 
-  // Close dropdown on outside click
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -22,9 +23,7 @@ const NavInsideBar = () => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -37,8 +36,8 @@ const NavInsideBar = () => {
         P.K Arts College
       </div>
 
-      {/* Menu */}
-      <div className="flex space-x-6">
+      {/* Desktop Menu */}
+      <div className="hidden md:flex space-x-6">
         {navItems.map((item) =>
           item.dropdown ? (
             <div key={item.label} className="relative" ref={dropdownRef}>
@@ -79,9 +78,65 @@ const NavInsideBar = () => {
           )
         )}
       </div>
+
+      {/* Mobile Hamburger */}
+      <div className="md:hidden flex items-center">
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="text-white focus:outline-none"
+        >
+          {isMobileMenuOpen ? "✖" : "☰"}
+        </button>
+      </div>
+
+      {/* Mobile Menu Drawer */}
+      {isMobileMenuOpen && (
+        <div className="absolute top-full left-0 w-full bg-slate-800 flex flex-col items-start md:hidden shadow-lg z-30">
+          {navItems.map((item) =>
+            item.dropdown ? (
+              <div key={item.label} className="w-full" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full text-left text-slate-200 hover:text-white hover:bg-slate-700 px-4 py-2 transition font-medium flex items-center"
+                >
+                  {item.label}
+                  <span className="ml-1">{isDropdownOpen ? "▲" : "▼"}</span>
+                </button>
+                {isDropdownOpen && (
+                  <div className="w-full bg-slate-700">
+                    {["1stYear", "2ndYear", "3rdYear", "4thYear"].map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => {
+                          navigate(`/total/${year}`);
+                          setIsDropdownOpen(false);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="block w-full text-left px-6 py-2 text-slate-200 hover:bg-slate-600 transition"
+                      >
+                        {year.replace("Year", " Year")}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                key={item.label}
+                className="w-full text-left text-slate-200 hover:text-white hover:bg-slate-700 px-4 py-2 transition font-medium"
+                onClick={() => {
+                  navigate(item.path);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                {item.label}
+              </button>
+            )
+          )}
+        </div>
+      )}
     </nav>
   );
 };
 
 export default NavInsideBar;
-
