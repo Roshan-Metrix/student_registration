@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const ContentData = () => {
   axios.defaults.withCredentials = true;
-  const [isHostelResident, setIsHostelResident] = React.useState(false);
+  const [isHostelResident, setIsHostelResident] = useState(false);
 
   const { backendUrl } = useContext(AppContent);
 
@@ -16,7 +16,6 @@ const ContentData = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target); // includes text + file fields automatically
 
     try {
@@ -42,157 +41,103 @@ const ContentData = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
-      <div className="flex flex-col items-center pt-6">
-        <h2 className="text-3xl font-bold text-slate-800 mb-2">Student Info</h2>
-        <p className="text-slate-500 mb-6">Fill in the details below</p>
+      <div className="flex flex-col items-center pt-6 px-4 sm:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center">
+          Student Info
+        </h2>
+        <p className="text-slate-500 mb-6 text-center">
+          Fill in the details below
+        </p>
+
         <form
-          className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-3xl mb-10"
+          className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-4xl mb-10 overflow-y-auto"
           onSubmit={handleSubmit}
           encType="multipart/form-data"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Name
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="name"
-                placeholder="Name"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Date of Birth
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="dob"
-                type="date"
-                placeholder="Date of Birth"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Father's Name
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="fatherName"
-                placeholder="Father's Name"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Father's Occupation
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="fatherOccupation"
-                placeholder="Father's Occupation"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Mother's Name
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="motherName"
-                placeholder="Mother's Name"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Mother's Occupation
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="motherOccupation"
-                placeholder="Mother's Occupation"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Medium of Instruction (12th Std)
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="mediumOfInstruction"
-                placeholder="Medium of Instruction"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Marks Scored
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="marksScored"
-                type="number"
-                placeholder="Marks Scored"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Percentage
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="percentage"
-                type="number"
-                step="0.01"
-                placeholder="Percentage"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                School Name & Place
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="schoolNamePlace"
-                placeholder="School Name & Place"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Religion
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="religion"
-                placeholder="Religion"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Nationality
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="nationality"
-                placeholder="Nationality"
-                required
-              />
-            </div>
+            {[
+              { label: "Name", name: "name", type: "text", required: true },
+              { label: "Date of Birth", name: "dob", type: "date", required: true },
+              { label: "Father's Name", name: "fatherName", type: "text", required: true },
+              {
+                label: "Father's Occupation",
+                name: "fatherOccupation",
+                type: "text",
+                required: true,
+              },
+              { label: "Mother's Name", name: "motherName", type: "text", required: true },
+              {
+                label: "Mother's Occupation",
+                name: "motherOccupation",
+                type: "text",
+              },
+              {
+                label: "Medium of Instruction (12th Std)",
+                name: "mediumOfInstruction",
+                type: "text",
+                required: true,
+              },
+              { label: "Marks Scored", name: "marksScored", type: "number" },
+              {
+                label: "Percentage",
+                name: "percentage",
+                type: "number",
+                step: "0.01",
+                min: "0",
+                max: "100",
+                required: true,
+              },
+              {
+                label: "School Name & Place",
+                name: "schoolNamePlace",
+                type: "text",
+                required: true,
+              },
+              { label: "Religion", name: "religion", type: "text", required: true },
+              { label: "Nationality", name: "nationality", type: "text", required: true },
+              {
+                label: "Date of Admission",
+                name: "dateOfAdmission",
+                type: "date",
+                required: true,
+              },
+              { label: "Date of Leaving", name: "dateOfLeaving", type: "date" },
+              { label: "Aadhaar No.", name: "aadhaar", type: "text" },
+              { label: "Contact No", name: "contactNo", type: "tel", max: "10", required: true },
+              { label: "Email", name: "email", type: "email" },
+              { label: "Address", name: "address", type: "text" },
+              {
+                label: "Year",
+                name: "year",
+                type: "number",
+                min: "1",
+                max: "4",
+                required: true,
+              },
+            ].map(({ label, name, type, step, min, max }) => (
+              <div key={name}>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  {label}
+                </label>
+                <input
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  name={name}
+                  type={type}
+                  step={step}
+                  min={min}
+                  max={max}
+                  required
+                />
+              </div>
+            ))}
+
+            {/* Category */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Category
               </label>
               <select
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="category"
                 required
               >
@@ -206,83 +151,14 @@ const ContentData = () => {
                 <option>SC</option>
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Date of Admission
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="dateOfAdmission"
-                type="date"
-                placeholder="Date of Admission"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Date of Leaving
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="dateOfLeaving"
-                type="date"
-                placeholder="Date of Leaving"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Aadhaar No.
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="aadhaar"
-                type="text"
-                placeholder="Aadhaar No."
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Contact No
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="contactNo"
-                type="tel"
-                placeholder="Contact No"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Email
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="email"
-                type="email"
-                placeholder="Email"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Address
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="address"
-                placeholder="Address"
-                required
-              />
-            </div>
+
+            {/* Gender */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Gender
               </label>
               <select
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="gender"
                 required
               >
@@ -291,24 +167,14 @@ const ContentData = () => {
                 <option>Female</option>
               </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Upload Photo
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="photo"
-                type="file"
-                accept="image/*"
-                required
-              />
-            </div>
+
+            {/* Courses */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Courses
               </label>
               <select
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="course"
                 required
               >
@@ -320,12 +186,14 @@ const ContentData = () => {
                 <option>B.Com</option>
               </select>
             </div>
+
+            {/* Blood Group */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Blood Group
               </label>
               <select
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="bloodGroup"
                 required
               >
@@ -340,37 +208,27 @@ const ContentData = () => {
                 <option>AB-</option>
               </select>
             </div>
+
+            {/* Scholarship */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Scholarship Details
               </label>
               <input
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="scholarshipDetails"
                 placeholder="Scholarship Details"
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Year
-              </label>
-              <input
-                className="input input-bordered w-full"
-                name="year"
-                type="number"
-                placeholder="1-4"
-                min="1"
-                max="4"
-                required
-              />
-            </div>
-            <div>
+
+            {/* Hostel */}
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Hostel Resident?
               </label>
               <select
-                className="input input-bordered w-full"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 name="hosteller"
                 onChange={handleHostelResidentChange}
                 required
@@ -380,20 +238,35 @@ const ContentData = () => {
                 <option value="No">No</option>
               </select>
             </div>
+
             {isHostelResident && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Hostel Resident Detail
                 </label>
                 <input
-                  className="input input-bordered w-full"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                   name="hostellerDetail"
                   placeholder="Hostel Resident Detail"
                   required
                 />
               </div>
-            )}
+            )} */}
+
+            {/* Photo Upload */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Upload Photo
+              </label>
+              <input
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+                name="photo"
+                type="file"
+                accept="image/*"
+              />
+            </div>
           </div>
+
           <button
             type="submit"
             className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer"

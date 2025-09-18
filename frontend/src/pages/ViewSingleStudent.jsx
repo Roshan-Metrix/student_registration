@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import NavInsideBar from "../components/NavInsideBar";
 import { AppContent } from "../context/AppContext";
@@ -16,14 +16,11 @@ const ViewSingleStudent = () => {
     const fetchStudent = async () => {
       try {
         const { data } = await axios.get(
-          backendUrl + `/api/roles/viewStudentData/${student_uid}`,
+          `${backendUrl}/api/roles/viewStudentData/${student_uid}`,
           { withCredentials: true }
         );
-        if (data.success) {
-          setStudent(data.student);
-        } else {
-          toast.error(data.message);
-        }
+        if (data.success) setStudent(data.student);
+        else toast.error(data.message);
       } catch (error) {
         toast.error("Error fetching student: " + error.message);
       }
@@ -41,8 +38,6 @@ const ViewSingleStudent = () => {
     doc.text("Department of Commerce", 105, 28, { align: "center" });
     doc.setFontSize(13);
     doc.text("STUDENTS PROFILE", 105, 38, { align: "center" });
-    // doc.setFontSize(16);
-    // doc.text("Student Details", 14, 20);
 
     const details = [
       ["Student UID", student.student_uid],
@@ -77,7 +72,7 @@ const ViewSingleStudent = () => {
     ].filter(Boolean);
 
     autoTable(doc, {
-      startY: 30,
+      startY: 45,
       head: [["Field", "Value"]],
       body: details,
       theme: "grid",
@@ -89,7 +84,9 @@ const ViewSingleStudent = () => {
   if (!student) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 flex items-center justify-center">
-        <p className="text-slate-600 text-xl">Loading student data...</p>
+        <p className="text-slate-600 text-lg sm:text-xl">
+          Loading student data...
+        </p>
       </div>
     );
   }
@@ -97,11 +94,11 @@ const ViewSingleStudent = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
-      <div className="flex flex-col items-center pt-10">
-        <h2 className="text-3xl font-bold text-slate-800 mb-2">
+      <div className="flex flex-col items-center pt-8 px-4 sm:px-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center">
           Student Details
         </h2>
-        <p className="text-slate-500 mb-6">
+        <p className="text-slate-500 mb-6 text-center">
           Detailed record for{" "}
           <span className="font-semibold">{student.name}</span>
         </p>
@@ -109,18 +106,18 @@ const ViewSingleStudent = () => {
         {/* Download Button */}
         <button
           onClick={downloadPDF}
-          className="mb-6 bg-slate-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer"
+          className="mb-6 bg-slate-900 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer text-sm sm:text-base"
         >
           Download as PDF
         </button>
 
-        <div className="bg-white shadow-2xl rounded-xl p-10 w-full max-w-4xl mb-10">
+        <div className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-4xl mb-10">
           {student.photo && (
             <div className="flex justify-center mb-6">
               <img
                 src={`${backendUrl}/api/upload/${student.photo}`}
                 alt="Student"
-                className="w-32 h-32 rounded-full object-cover border-4 border-slate-200"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-slate-200"
               />
             </div>
           )}
@@ -131,36 +128,18 @@ const ViewSingleStudent = () => {
             <Detail label="Email" value={student.email} />
             <Detail label="DOB" value={student.dob?.split("T")[0]} />
             <Detail label="Father's Name" value={student.fatherName} />
-            <Detail
-              label="Father's Occupation"
-              value={student.fatherOccupation}
-            />
+            <Detail label="Father's Occupation" value={student.fatherOccupation} />
             <Detail label="Mother's Name" value={student.motherName} />
-            <Detail
-              label="Mother's Occupation"
-              value={student.motherOccupation}
-            />
-            <Detail
-              label="Medium of Instruction"
-              value={student.mediumOfInstruction}
-            />
+            <Detail label="Mother's Occupation" value={student.motherOccupation} />
+            <Detail label="Medium of Instruction" value={student.mediumOfInstruction} />
             <Detail label="Marks Scored" value={student.marksScored} />
             <Detail label="Percentage" value={student.percentage} />
-            <Detail
-              label="School Name & Place"
-              value={student.schoolNamePlace}
-            />
+            <Detail label="School Name & Place" value={student.schoolNamePlace} />
             <Detail label="Religion" value={student.religion} />
             <Detail label="Nationality" value={student.nationality} />
             <Detail label="Category" value={student.category} />
-            <Detail
-              label="Date of Admission"
-              value={student.dateOfAdmission?.split("T")[0]}
-            />
-            <Detail
-              label="Date of Leaving"
-              value={student.dateOfLeaving?.split("T")[0]}
-            />
+            <Detail label="Date of Admission" value={student.dateOfAdmission?.split("T")[0]} />
+            <Detail label="Date of Leaving" value={student.dateOfLeaving?.split("T")[0]} />
             <Detail label="Aadhaar" value={student.aadhaar} />
             <Detail label="Contact No" value={student.contactNo} />
             <Detail label="Address" value={student.address} />
@@ -168,17 +147,11 @@ const ViewSingleStudent = () => {
             <Detail label="Course" value={student.course} />
             <Detail label="Year" value={student.year} />
             <Detail label="Blood Group" value={student.bloodGroup} />
-            <Detail
-              label="Scholarship Details"
-              value={student.scholarshipDetails}
-            />
-            <Detail label="Hosteller" value={student.hosteller} />
+            <Detail label="Scholarship Details" value={student.scholarshipDetails} />
+            {/* <Detail label="Hosteller" value={student.hosteller} />
             {student.hosteller === "Yes" && (
-              <Detail
-                label="Hosteller Detail"
-                value={student.hostellerDetail}
-              />
-            )}
+              <Detail label="Hosteller Detail" value={student.hostellerDetail} />
+            )} */}
           </div>
         </div>
       </div>
@@ -188,8 +161,8 @@ const ViewSingleStudent = () => {
 
 const Detail = ({ label, value }) => (
   <div>
-    <p className="text-sm text-slate-500">{label}</p>
-    <p className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-1">
+    <p className="text-xs sm:text-sm text-slate-500">{label}</p>
+    <p className="text-sm sm:text-base font-semibold text-slate-800 border-b border-slate-200 pb-1 break-words">
       {value || "—"}
     </p>
   </div>

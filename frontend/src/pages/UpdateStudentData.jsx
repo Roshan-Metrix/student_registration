@@ -11,7 +11,7 @@ const UpdateStudentData = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
-  const [isHostelResident, setIsHostelResident] = useState(false);
+  // const [isHostelResident, setIsHostelResident] = useState(false);
   const [newPhoto, setNewPhoto] = useState(null);
 
   axios.defaults.withCredentials = true;
@@ -461,7 +461,7 @@ const UpdateStudentData = () => {
               />
             </div>
             {/* Hostel */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Hostel Resident?
               </label>
@@ -489,7 +489,7 @@ const UpdateStudentData = () => {
                   onChange={handleChange}
                 />
               </div>
-            )}
+            )} */}
             {/* Current photo preview (optional) */}
             {formData.photo && (
               <div className="col-span-2">

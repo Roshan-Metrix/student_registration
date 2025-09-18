@@ -15,7 +15,7 @@ const PrintData = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [courseFilter, setCourseFilter] = useState("");
-  const [hostellerFilter, setHostellerFilter] = useState("");
+  // const [hostellerFilter, setHostellerFilter] = useState("");
 
   // Fetch all students
   useEffect(() => {
@@ -78,12 +78,12 @@ useEffect(() => {
   }
 
   // Hosteller
-  if (hostellerFilter) {
-    filtered = filtered.filter((s) => s.hosteller === hostellerFilter);
-  }
+  // if (hostellerFilter) {
+  //   filtered = filtered.filter((s) => s.hosteller === hostellerFilter);
+  // }
 
   setFilteredStudents(filtered);
-}, [searchQuery, categoryFilter, yearFilter, courseFilter, hostellerFilter, students]);
+}, [searchQuery, categoryFilter, yearFilter, courseFilter, students]);
 
 
   // Download filtered data as PDF
@@ -99,12 +99,11 @@ useEffect(() => {
       s.category,
       s.year,
       s.course,
-      s.hosteller,
     ]);
 
     autoTable(doc, {
       startY: 30,
-      head: [["UID", "Name", "Email", "Category", "Year", "Course", "Hosteller"]],
+      head: [["UID", "Name", "Email", "Category", "Year", "Course"]],
       body,
       theme: "grid",
     });
@@ -184,7 +183,7 @@ useEffect(() => {
           </select>
 
           {/* Hosteller */}
-          <select
+          {/* <select
             value={hostellerFilter}
             onChange={(e) => setHostellerFilter(e.target.value)}
             className="px-4 py-2 border border-slate-300 rounded-lg w-full shadow-sm"
@@ -192,7 +191,7 @@ useEffect(() => {
             <option value="">Hosteller: All</option>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
-          </select>
+          </select> */}
         </div>
 
         {/* Table */}
@@ -206,7 +205,7 @@ useEffect(() => {
                 <th className="px-6 py-3 text-center">Category</th>
                 <th className="px-6 py-3 text-center">Year</th>
                 <th className="px-6 py-3 text-center">Course</th>
-                <th className="px-6 py-3 text-center">Hosteller</th>
+                {/* <th className="px-6 py-3 text-center">Hosteller</th> */}
               </tr>
             </thead>
             <tbody>
@@ -222,7 +221,7 @@ useEffect(() => {
                     <td className="px-6 py-3 text-center">{s.category}</td>
                     <td className="px-6 py-3 text-center">{s.year}</td>
                     <td className="px-6 py-3 text-center">{s.course}</td>
-                    <td className="px-6 py-3 text-center">{s.hosteller}</td>
+                    {/* <td className="px-6 py-3 text-center">{s.hosteller}</td> */}
                   </tr>
                 ))
               ) : (

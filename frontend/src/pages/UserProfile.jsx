@@ -70,8 +70,8 @@ const UserProfile = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
 
-      <div className="flex flex-col items-center pt-12">
-        <h2 className="text-3xl font-bold text-slate-800 mb-6">User Settings</h2>
+      <div className="flex flex-col items-center pt-5">
+        <h2 className="text-3xl font-bold text-slate-800 mb-6">Admin Profile</h2>
 
         {user ? (
           <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-lg">
@@ -107,6 +107,12 @@ const UserProfile = () => {
                 className="bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-500 transition cursor-pointer"
               >
                 Delete Account
+              </button>
+              <button
+                onClick={handlePasswordChange}
+                className="text-blue-600 pl-[70%] py-1 rounded-lg font-small hover:bg-blue-500 transition cursor-pointer"
+              >
+                Change Password
               </button>
             </div>
           </div>
