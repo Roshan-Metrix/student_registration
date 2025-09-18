@@ -28,8 +28,6 @@ export const studentDetail = async (req, res) => {
       year,
       bloodGroup,
       scholarshipDetails,
-      hosteller,
-      hostellerDetail,
     } = req.body;
 
     const photo = req.file ? req.file.filename : null;
@@ -44,7 +42,7 @@ export const studentDetail = async (req, res) => {
 
     //  const userId = req.userId;
 
-    //    if (!name || !dob || !fatherName || !fatherOccupation || !motherName || !motherOccupation || !mediumOfInstruction || !marksScored || !percentage ||!schoolNamePlace || !religion || !nationality || !category || !dateOfAdmission ||!dateOfLeaving || !contactNo || !email || !aadhaar || !address || !gender || !course || !year || !photo || !bloodGroup || !scholarshipDetails || !hosteller ||!hostellerDetail){
+    //    if (!name || !dob || !fatherName || !fatherOccupation || !motherName || !motherOccupation || !mediumOfInstruction || !marksScored || !percentage ||!schoolNamePlace || !religion || !nationality || !category || !dateOfAdmission ||!dateOfLeaving || !contactNo || !email || !aadhaar || !address || !gender || !course || !year || !photo || !bloodGroup || !scholarshipDetails ){
     //  return res.json({ success: false, message: "All fields are required" });
     //      }
 
@@ -91,8 +89,6 @@ export const studentDetail = async (req, res) => {
             photo VARCHAR(255),
             bloodGroup VARCHAR(10),
             scholarshipDetails VARCHAR(100),
-            hosteller VARCHAR(10),
-            hostellerDetail TEXT,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
 
@@ -100,7 +96,7 @@ export const studentDetail = async (req, res) => {
 
     // Insert student data
     const insertQuery =
-      "INSERT INTO studentdata (name, dob, fatherName,fatherOccupation, motherName, motherOccupation, mediumOfInstruction, marksScored, percentage, schoolNamePlace, religion, nationality, category, dateOfAdmission, dateOfLeaving,contactNo, email, aadhaar, address, gender, course, year, photo, bloodGroup,scholarshipDetails, hosteller, hostellerDetail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO studentdata (name, dob, fatherName,fatherOccupation, motherName, motherOccupation, mediumOfInstruction, marksScored, percentage, schoolNamePlace, religion, nationality, category, dateOfAdmission, dateOfLeaving,contactNo, email, aadhaar, address, gender, course, year, photo, bloodGroup,scholarshipDetails) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Replace undefined values with null to avoid SQL errors
     const studentParams = [
@@ -128,9 +124,7 @@ export const studentDetail = async (req, res) => {
       year ?? null,
       photo ?? null,
       bloodGroup ?? null,
-      scholarshipDetails ?? null,
-      hosteller ?? null,
-      hostellerDetail ?? null,
+      scholarshipDetails ?? null
     ];
 
     // Check if a student with the same email already exists and if exists then new details cannot be created
