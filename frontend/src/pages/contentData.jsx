@@ -222,37 +222,6 @@ const ContentData = () => {
               />
             </div>
 
-            {/* Hostel */}
-            {/* <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Hostel Resident?
-              </label>
-              <select
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
-                name="hosteller"
-                onChange={handleHostelResidentChange}
-                required
-              >
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-
-            {isHostelResident && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Hostel Resident Detail
-                </label>
-                <input
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
-                  name="hostellerDetail"
-                  placeholder="Hostel Resident Detail"
-                  required
-                />
-              </div>
-            )} */}
-
             {/* Photo Upload */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
