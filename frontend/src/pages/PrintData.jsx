@@ -15,7 +15,6 @@ const PrintData = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [courseFilter, setCourseFilter] = useState("");
-  // const [hostellerFilter, setHostellerFilter] = useState("");
 
   // Fetch all students
   useEffect(() => {
@@ -76,11 +75,6 @@ useEffect(() => {
   if (courseFilter) {
     filtered = filtered.filter((s) => s.course === courseFilter);
   }
-
-  // Hosteller
-  // if (hostellerFilter) {
-  //   filtered = filtered.filter((s) => s.hosteller === hostellerFilter);
-  // }
 
   setFilteredStudents(filtered);
 }, [searchQuery, categoryFilter, yearFilter, courseFilter, students]);

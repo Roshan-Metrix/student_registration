@@ -148,10 +148,6 @@ const ViewSingleStudent = () => {
             <Detail label="Year" value={student.year} />
             <Detail label="Blood Group" value={student.bloodGroup} />
             <Detail label="Scholarship Details" value={student.scholarshipDetails} />
-            {/* <Detail label="Hosteller" value={student.hosteller} />
-            {student.hosteller === "Yes" && (
-              <Detail label="Hosteller Detail" value={student.hostellerDetail} />
-            )} */}
           </div>
         </div>
       </div>

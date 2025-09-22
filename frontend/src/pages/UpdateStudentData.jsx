@@ -11,7 +11,6 @@ const UpdateStudentData = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
-  // const [isHostelResident, setIsHostelResident] = useState(false);
   const [newPhoto, setNewPhoto] = useState(null);
 
   axios.defaults.withCredentials = true;
@@ -460,36 +459,6 @@ const UpdateStudentData = () => {
                 required
               />
             </div>
-            {/* Hostel */}
-            {/* <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Hostel Resident?
-              </label>
-              <select
-                className="input input-bordered w-full"
-                name="hosteller"
-                value={formData.hosteller || ""}
-                onChange={handleHostelResidentChange}
-                required
-              >
-                <option value="">Select</option>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </div>
-            {isHostelResident && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Hostel Resident Detail
-                </label>
-                <input
-                  className="input input-bordered w-full"
-                  name="hostellerDetail"
-                  value={formData.hostellerDetail || ""}
-                  onChange={handleChange}
-                />
-              </div>
-            )} */}
             {/* Current photo preview (optional) */}
             {formData.photo && (
               <div className="col-span-2">
