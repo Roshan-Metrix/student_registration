@@ -127,7 +127,7 @@ const UserProfile = () => {
               </button>
               <button
                 onClick={handlePasswordChange}
-                className="text-blue-600 underline hover:text-blue-800 text-sm text-right"
+                className="text-blue-600 underline hover:text-blue-800 text-sm text-right cursor-pointer"
               >
                 Change Password
               </button>
