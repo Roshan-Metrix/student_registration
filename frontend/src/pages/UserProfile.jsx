@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-
-  const { backendUrl , setIsLoggedin } = useContext(AppContent);
+  const { backendUrl, setIsLoggedin } = useContext(AppContent);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -35,9 +34,13 @@ const UserProfile = () => {
   // Handle logout
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post(`${backendUrl}/api/auth/logout`, {}, { withCredentials: true });
+      const { data } = await axios.post(
+        `${backendUrl}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
       if (data.success) {
-        setIsLoggedin(false)
+        setIsLoggedin(false);
         toast.success("Logged out successfully");
         navigate("/");
       } else {
@@ -50,11 +53,18 @@ const UserProfile = () => {
 
   // Handle delete account
   const handleDelete = async () => {
-    if (!window.confirm("⚠️ Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      !window.confirm(
+        "⚠️ Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
       return;
     }
     try {
-      const { data } = await axios.delete(`${backendUrl}/api/auth/user/delete`, { withCredentials: true });
+      const { data } = await axios.delete(
+        `${backendUrl}/api/auth/user/delete`,
+        { withCredentials: true }
+      );
       if (data.success) {
         toast.success("Account deleted successfully");
         navigate("/");
@@ -66,12 +76,19 @@ const UserProfile = () => {
     }
   };
 
+  // Handle password change
+  const handlePasswordChange = () => {
+    navigate("/change-password"); // navigate to your change password page
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
 
       <div className="flex flex-col items-center pt-5">
-        <h2 className="text-3xl font-bold text-slate-800 mb-6">Admin Profile</h2>
+        <h2 className="text-3xl font-bold text-slate-800 mb-6">
+          Admin Profile
+        </h2>
 
         {user ? (
           <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-lg">
@@ -110,7 +127,7 @@ const UserProfile = () => {
               </button>
               <button
                 onClick={handlePasswordChange}
-                className="text-blue-600 pl-[70%] py-1 rounded-lg font-small hover:bg-blue-500 transition cursor-pointer"
+                className="text-blue-600 underline hover:text-blue-800 text-sm text-right"
               >
                 Change Password
               </button>
