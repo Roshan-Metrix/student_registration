@@ -10,10 +10,10 @@ import TotalCalc from './pages/TotalCalc'
 import ViewSingleStudent from './pages/ViewSingleStudent'
 import UpdateStudentData from './pages/UpdateStudentData'
 import YearCategory from './pages/YearCategory'
-import UserProfile from './pages/UserProfile'
 import EmailVerify from './pages/authPages/EmailVerify'
 import Login from './pages/authPages/Login';
 import ResetPassword from './pages/authPages/ResetPassword';
+import UserProfile from './pages/UserProfile';
 
 const App = () => {
   return (
