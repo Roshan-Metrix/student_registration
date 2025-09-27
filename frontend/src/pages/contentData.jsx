@@ -96,11 +96,11 @@ const ContentData = () => {
   });
 
   const sectionTitles = [
-    "Personal Information",
-    "Family Details",
-    "School Details",
-    "Admission & Contact",
-    "Course & Address",
+    "Batch Details",
+    "Student Informations",
+    "Fee's Details",
+    "Attendance Percentage",
+    "Semesters Exam",
     "Other Information",
   ];
 
@@ -124,9 +124,13 @@ const ContentData = () => {
   
 
   const handleNext = () => {
-    // Validate required fields on step 1
+    // Validate required fields 
+    if(step === 1 && (!formData.course || !formData.year)){
+     toast.error("Course and Year are compulsory!");
+      return;
+      }
     if (
-      step === 1 &&
+      step === 2 &&
       (!formData.name ||
         !formData.dob ||
         !formData.fatherName ||
@@ -184,8 +188,42 @@ const ContentData = () => {
           onSubmit={handleSubmit}
           className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-3xl mb-10"
         >
-          {/* Step 1 - Personal Information */}
+
+         {/* Step 1 - Batch Details */}
           {step === 1 && (
+            <div className="grid grid-cols-1 gap-6">
+               <Select
+                label="Course"
+                name="course"
+                value={formData.course}
+                onChange={handleChange}
+                options={[
+                  "B.A (Tamil)",
+                  "B.Sc (Mathematics)",
+                  "B.B.A (Tourism)",
+                  "B.C.A (Computer Applications)",
+                  "B.Com",
+                ]}
+                required
+              />
+              <Select
+                label="Year"
+                name="year"
+                type="number"
+                options={[
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                ]}
+                value={formData.year}
+                onChange={handleChange}
+              />
+            </div>
+          )}
+
+          {/* Step 1 - Student Information */}
+          {step === 2 && (
             <div className="grid grid-cols-1 gap-6">
               <Input
                 label="Name *"
@@ -216,13 +254,6 @@ const ContentData = () => {
                 onChange={handleChange}
                 required
               />
-            </div>
-          )}
-
-          {/* ... (All other steps remain the same) ... */}
-          {/* Step 2 - Family Details */}
-          {step === 2 && (
-            <div className="grid grid-cols-1 gap-6">
               <Input
                 label="Mother's Name"
                 name="motherName"
@@ -235,13 +266,7 @@ const ContentData = () => {
                 value={formData.motherOccupation}
                 onChange={handleChange}
               />
-            </div>
-          )}
-
-          {/* Step 3 - School Details */}
-          {step === 3 && (
-            <div className="grid grid-cols-1 gap-6">
-              <Input
+               <Input
                 label="Medium of Instruction"
                 name="mediumOfInstruction"
                 value={formData.mediumOfInstruction}
@@ -280,13 +305,7 @@ const ContentData = () => {
                 value={formData.nationality}
                 onChange={handleChange}
               />
-            </div>
-          )}
-
-          {/* Step 4 - Admission & Contact */}
-          {step === 4 && (
-            <div className="grid grid-cols-1 gap-6">
-              <Input
+               <Input
                 label="Date of Admission"
                 name="dateOfAdmission"
                 type="date"
@@ -319,12 +338,6 @@ const ContentData = () => {
                 value={formData.email}
                 onChange={handleChange}
               />
-            </div>
-          )}
-
-          {/* Step 5 - Course & Address */}
-          {step === 5 && (
-            <div className="grid grid-cols-1 gap-6">
               <Input
                 label="Address"
                 name="address"
@@ -339,29 +352,6 @@ const ContentData = () => {
                 options={["Male", "Female"]}
               />
               <Select
-                label="Course"
-                name="course"
-                value={formData.course}
-                onChange={handleChange}
-                options={[
-                  "B.A (Tamil)",
-                  "B.Sc (Mathematics)",
-                  "B.B.A (Tourism)",
-                  "B.C.A (Computer Applications)",
-                  "B.Com",
-                ]}
-              />
-              <Input
-                label="Year"
-                name="year"
-                type="number"
-                min="1"
-                max="4"
-                value={formData.year}
-                onChange={handleChange}
-              />
-              
-              <Select
                 label="Category"
                 name="category"
                 value={formData.category}
@@ -369,13 +359,7 @@ const ContentData = () => {
                 required={true}
                 options={["FC", "BC", "OBC", "MBC", "BCM", "EBC", "SC"]}
               />
-            </div>
-          )}
-
-          {/* Step 6 - Other Information */}
-          {step === 6 && (
-            <div className="grid grid-cols-1 gap-6">
-              <Select
+               <Select
                 label="Blood Group"
                 name="bloodGroup"
                 value={formData.bloodGroup}
@@ -399,6 +383,41 @@ const ContentData = () => {
                   onChange={handleChange}
                 />
               </div>
+            </div>
+          )}
+
+          {/* Step 2 - Family Details */}
+          {step === 3 && (
+            <div className="grid grid-cols-1 gap-6">
+              
+            </div>
+          )}
+
+          {/* Step 3 - School Details */}
+          {step === 4 && (
+            <div className="grid grid-cols-1 gap-6">
+             
+            </div>
+          )}
+
+          {/* Step 4 - Admission & Contact */}
+          {step === 5 && (
+            <div className="grid grid-cols-1 gap-6">
+             
+            </div>
+          )}
+
+          {/* Step 5 - Course & Address */}
+          {step === 6 && (
+            <div className="grid grid-cols-1 gap-6">
+              
+            </div>
+          )}
+
+          {/* Step 6 - Other Information */}
+          {step === 6 && (
+            <div className="grid grid-cols-1 gap-6">
+             
             </div>
           )}
 
