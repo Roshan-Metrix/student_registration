@@ -61,7 +61,7 @@ const Select = ({ label, name, value, onChange, options, required = false }) => 
 // ------------------------------------------------------------------
 
 
-const ContentData = () => {
+const ContentDatas = () => {
   const { backendUrl } = useContext(AppContent);
   const [step, setStep] = useState(1);
 
@@ -640,4 +640,4 @@ const ContentData = () => {
   );
 };
 
-export default ContentData;
+export default ContentDatas;

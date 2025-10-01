@@ -3,7 +3,7 @@ import { Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentData from './pages/contentData'
+import ContentData from './pages/contentDatas'
 import ViewData from './pages/ViewData'
 import PrintData from './pages/PrintData'
 import TotalCalc from './pages/TotalCalc'
@@ -24,7 +24,7 @@ const App = () => {
         <Route path='/login' element={<Login/>}/>
         <Route path='/email-verify' element={<EmailVerify/>}/>
         <Route path='/reset-password' element={<ResetPassword/>}/>
-        <Route path='/content' element={<ContentData/>}/>
+        <Route path='/content' element={<ContentDatas/>}/>
         <Route path='/view' element={<ViewData/>}/>
         <Route path='/print' element={<PrintData/>}/>
         <Route path='/total' element={<TotalCalc/>}/>
