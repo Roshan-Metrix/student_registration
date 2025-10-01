@@ -6,6 +6,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { Document, Packer, Paragraph, Table, TableRow, TableCell, TextRun, AlignmentType } from "docx";
 
 const YearCategory = () => {
   const { backendUrl } = useContext(AppContent);
@@ -35,7 +38,7 @@ const YearCategory = () => {
     fetchData();
   }, [backendUrl, yearNumber]);
 
-  // Convert backend object into rows for table/PDF
+  // Convert backend object into rows for table/PDF/Excel/Word
   const rows = Object.entries(data).map(([category, values]) => ({
     category,
     boys: values.boys || 0,
@@ -48,7 +51,7 @@ const YearCategory = () => {
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
-    doc.text(`${year} - Category Wise Student Report`, 14, 20);
+    doc.text(`${year} - Category Wise Student Report`, 105, 20, { align: "center" });
 
     const body = rows.map((row) => [
       row.category,
@@ -68,6 +71,67 @@ const YearCategory = () => {
     doc.save(`${year}_Category_Report.pdf`);
   };
 
+  // Download Excel
+  const downloadExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Category Report");
+    XLSX.writeFile(wb, `${year}_Category_Report.xlsx`);
+  };
+
+  // Download Word
+  const downloadWord = async () => {
+    const tableRows = [
+      new TableRow({
+        children: ["Category", "Boys", "Girls", "Total", "Remarks"].map(
+          (header) =>
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: header, bold: true })] })],
+            })
+        ),
+      }),
+      ...rows.map(
+        (row) =>
+          new TableRow({
+            children: [
+              row.category,
+              row.boys.toString(),
+              row.girls.toString(),
+              row.total.toString(),
+              row.remarks,
+            ].map(
+              (val) =>
+                new TableCell({
+                  children: [new Paragraph({ children: [new TextRun(val)] })],
+                })
+            ),
+          })
+      ),
+    ];
+
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph({
+              children: [new TextRun({ text: "DEPARTMENT OF COMMERCE", bold: true, size: 28 })],
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: `${year} - Category Wise Student Report`, bold: true })],
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 400 },
+            }),
+            new Table({ rows: tableRows }),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${year}_Category_Report.docx`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
@@ -79,12 +143,27 @@ const YearCategory = () => {
               {year} - Category Wise Student Report
             </span>
           </h2>
-          <button
-            onClick={downloadPDF}
-            className="bg-slate-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-slate-800 transition"
-          >
-            Download PDF
-          </button>
+
+          <div className="flex gap-3">
+            <button
+              onClick={downloadPDF}
+              className="bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-800 transition"
+            >
+              PDF
+            </button>
+            <button
+              onClick={downloadExcel}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-500 transition"
+            >
+              Excel
+            </button>
+            <button
+              onClick={downloadWord}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition"
+            >
+              Word
+            </button>
+          </div>
         </div>
 
         <div className="bg-white shadow-2xl rounded-xl overflow-hidden">

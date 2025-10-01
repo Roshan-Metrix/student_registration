@@ -100,7 +100,7 @@ const ContentData = () => {
     "Student Informations",
     "Fee's Details",
     "Attendance Percentage",
-    "Semesters Exam",
+    "Semester Table",
     "Other Information",
   ];
 
@@ -182,7 +182,7 @@ const ContentData = () => {
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center">
           {sectionTitles[step - 1]}
         </h2>
-        <p className="text-slate-500 mb-6 text-center">Step {step} of 6</p>
+        <p className="text-slate-500 mb-6 text-center">Step {step} of 5</p>
 
         <form
           onSubmit={handleSubmit}
@@ -386,40 +386,224 @@ const ContentData = () => {
             </div>
           )}
 
-          {/* Step 2 - Family Details */}
+          {/* Step 2 - Fee's Details */}
           {step === 3 && (
             <div className="grid grid-cols-1 gap-6">
-              
+              <table className="w-full border border-slate-300 rounded-lg overflow-hidden">
+                <thead>
+                  <tr className="bg-slate-200">
+                    <th colSpan={4} className="text-left px-4 py-2 font-semibold">Academic Year Fees</th>
+                  </tr>
+                  <tr>
+                    <th className="px-4 py-2 border-r">I</th>
+                    <th className="px-4 py-2 border-r">II</th>
+                    <th className="px-4 py-2 border-r">III</th>
+                    <th className="px-4 py-2">IV</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2 border-r">
+                      <Input
+                        name="feesYear1"
+                        type="number"
+                        value={formData.feesYear1 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter fees"
+                      />
+                    </td>
+                    <td className="px-4 py-2 border-r">
+                      <Input
+                        name="feesYear2"
+                        type="number"
+                        value={formData.feesYear2 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter fees"
+                      />
+                    </td>
+                    <td className="px-4 py-2 border-r">
+                      <Input
+                        name="feesYear3"
+                        type="number"
+                        value={formData.feesYear3 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter fees"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <Input
+                        name="feesYear4"
+                        type="number"
+                        value={formData.feesYear4 || ""}
+                        onChange={handleChange}
+                        placeholder="Enter fees"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
 
-          {/* Step 3 - School Details */}
+          {/* Step 3 - Percentage Of Attendance in each semester */}
           {step === 4 && (
             <div className="grid grid-cols-1 gap-6">
-             
+            <table className="w-full border border-slate-300 rounded-lg overflow-hidden">
+              <thead>
+                <tr className="bg-slate-200">
+                  <th colSpan={8} className="text-left px-4 py-2 font-semibold">Attendance Percentage (Semester-wise)</th>
+                </tr>
+                <tr>
+                  <th className="px-4 py-2 border-r">I</th>
+                  <th className="px-4 py-2 border-r">II</th>
+                  <th className="px-4 py-2 border-r">III</th>
+                  <th className="px-4 py-2 border-r">IV</th>
+                  <th className="px-4 py-2 border-r">V</th>
+                  <th className="px-4 py-2 border-r">VI</th>
+                  <th className="px-4 py-2 border-r">VII</th>
+                  <th className="px-4 py-2">VIII</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem1"
+                      type="number"
+                      value={formData.attendanceSem1 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem2"
+                      type="number"
+                      value={formData.attendanceSem2 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem3"
+                      type="number"
+                      value={formData.attendanceSem3 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem4"
+                      type="number"
+                      value={formData.attendanceSem4 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem5"
+                      type="number"
+                      value={formData.attendanceSem5 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem6"
+                      type="number"
+                      value={formData.attendanceSem6 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2 border-r">
+                    <Input
+                      name="attendanceSem7"
+                      type="number"
+                      value={formData.attendanceSem7 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                  <td className="px-4 py-2">
+                    <Input
+                      name="attendanceSem8"
+                      type="number"
+                      value={formData.attendanceSem8 || ""}
+                      onChange={handleChange}
+                      placeholder="Enter %"
+                      min={0}
+                      max={100}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             </div>
           )}
 
-          {/* Step 4 - Admission & Contact */}
+          {/* Step 4 - Semester Table */}
           {step === 5 && (
             <div className="grid grid-cols-1 gap-6">
-             
+            <table className="w-full border border-slate-300 rounded-lg overflow-hidden">
+              <thead>
+                <tr className="bg-slate-200">
+                  <th className="px-4 py-2 border-r">Description</th>
+                  <th colSpan={8} className="px-4 py-2">Semester</th>
+                </tr>
+                <tr>
+                  <th className="px-4 py-2 border-r"></th>
+                  {[...Array(8)].map((_, i) => (
+                    <th key={i} className="px-4 py-2 border-r">{`Sem ${i + 1}`}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {["Exam Fees", "GPA", "CGPA", "MarkSheet"].map((desc, rowIdx) => (
+                  <tr key={desc}>
+                    <td className="px-4 py-2 border-r font-semibold">{desc}</td>
+                    {[...Array(8)].map((_, semIdx) => (
+                      <td key={semIdx} className="px-4 py-2 border-r">
+                        <Input
+                          name={`${desc.replace(/\s/g, '').toLowerCase()}Sem${semIdx + 1}`}
+                          type={desc === "Exam Fees" ? "number" : "text"}
+                          value={formData[`${desc.replace(/\s/g, '').toLowerCase()}Sem${semIdx + 1}`] || ""}
+                          onChange={handleChange}
+                          placeholder={desc === "Exam Fees" ? "Fees" : desc}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             </div>
           )}
 
           {/* Step 5 - Course & Address */}
-          {step === 6 && (
+          {/* {step === 6 && (
             <div className="grid grid-cols-1 gap-6">
               
             </div>
-          )}
-
-          {/* Step 6 - Other Information */}
-          {step === 6 && (
-            <div className="grid grid-cols-1 gap-6">
-             
-            </div>
-          )}
+          )} */}
 
           {/* Navigation buttons */}
           <div className="flex justify-between mt-8">
@@ -432,7 +616,7 @@ const ContentData = () => {
                 Back
               </button>
             )}
-            {step < 6 && (
+            {step < 5 && (
               <button
                 type="button"
                 onClick={handleNext}
@@ -441,7 +625,7 @@ const ContentData = () => {
                 Next
               </button>
             )}
-            {step === 6 && (
+            {step === 5 && (
               <button
                 type="submit"
                 className="ml-auto px-6 py-2 bg-green-700 text-white rounded-lg font-semibold hover:bg-green-600"

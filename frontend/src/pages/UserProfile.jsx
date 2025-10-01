@@ -78,7 +78,7 @@ const UserProfile = () => {
 
   // Handle password change
   const handlePasswordChange = () => {
-    navigate("/change-password"); // navigate to your change password page
+    navigate("/reset-password"); // navigate to your reset password page
   };
 
   return (

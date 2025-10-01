@@ -5,6 +5,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
 
 const PrintData = () => {
   const { backendUrl } = useContext(AppContent);
@@ -41,69 +53,156 @@ const PrintData = () => {
   const uniqueCourses = [...new Set(students.map((s) => s.course))];
 
   // Filtering logic
-useEffect(() => {
-  let filtered = students;
+  useEffect(() => {
+    let filtered = students;
 
-  // Multi-search
-  if (searchQuery) {
-    const searchTerms = searchQuery
-      .split(",") // split by comma
-      .map((term) => term.trim().toLowerCase()) // clean terms
-      .filter((term) => term.length > 0);
+    // Multi-search
+    if (searchQuery) {
+      const searchTerms = searchQuery
+        .split(",")
+        .map((term) => term.trim().toLowerCase())
+        .filter((term) => term.length > 0);
 
-    filtered = filtered.filter((s) =>
-      searchTerms.some(
-        (term) =>
-          s.name.toLowerCase().includes(term) ||
-          s.email.toLowerCase().includes(term) ||
-          s.student_uid.toLowerCase().includes(term)
-      )
-    );
-  }
+      filtered = filtered.filter((s) =>
+        searchTerms.some(
+          (term) =>
+            s.name.toLowerCase().includes(term) ||
+            s.email.toLowerCase().includes(term) ||
+            s.student_uid.toLowerCase().includes(term)
+        )
+      );
+    }
 
-  // Category
-  if (categoryFilter) {
-    filtered = filtered.filter((s) => s.category === categoryFilter);
-  }
+    if (categoryFilter) {
+      filtered = filtered.filter((s) => s.category === categoryFilter);
+    }
+    if (yearFilter) {
+      filtered = filtered.filter((s) => String(s.year) === yearFilter);
+    }
+    if (courseFilter) {
+      filtered = filtered.filter((s) => s.course === courseFilter);
+    }
 
-  // Year
-  if (yearFilter) {
-    filtered = filtered.filter((s) => String(s.year) === yearFilter);
-  }
+    setFilteredStudents(filtered);
+  }, [searchQuery, categoryFilter, yearFilter, courseFilter, students]);
 
-  // Course
-  if (courseFilter) {
-    filtered = filtered.filter((s) => s.course === courseFilter);
-  }
+  // Download PDF
+const downloadPDF = () => {
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 15, { align: "center" });
+  doc.setFontSize(12);
+  doc.text("DEPARTMENT OF COMMERCE", 105, 22, { align: "center" });
+  doc.setFontSize(14);
+  doc.text("Filtered Student Data", 105, 32, { align: "center" });
 
-  setFilteredStudents(filtered);
-}, [searchQuery, categoryFilter, yearFilter, courseFilter, students]);
+  const body = filteredStudents.map((s) => [
+    s.student_uid,
+    s.name,
+    s.email,
+    s.category,
+    s.year,
+    s.course,
+  ]);
 
+  autoTable(doc, {
+    startY: 40,
+    head: [["UID", "Name", "Email", "Category", "Year", "Course"]],
+    body,
+    theme: "grid",
+  });
 
-  // Download filtered data as PDF
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("Filtered Student Data", 14, 20);
+  doc.save("Filtered_Students.pdf");
+};
 
-    const body = filteredStudents.map((s) => [
-      s.student_uid,
-      s.name,
-      s.email,
-      s.category,
-      s.year,
-      s.course,
-    ]);
+// Download Excel
+const downloadExcel = () => {
+  const header = [
+    { A: "PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE" },
+    { A: "DEPARTMENT OF COMMERCE" },
+    { A: "Filtered Student Data" },
+    {}, // empty row before table
+  ];
 
-    autoTable(doc, {
-      startY: 30,
-      head: [["UID", "Name", "Email", "Category", "Year", "Course"]],
-      body,
-      theme: "grid",
-    });
+  const ws = XLSX.utils.json_to_sheet([]);
+  XLSX.utils.sheet_add_json(ws, header, { skipHeader: true, origin: "A1" });
 
-    doc.save("Filtered_Students.pdf");
-  };
+  const rows = filteredStudents.map((s) => ({
+    UID: s.student_uid,
+    Name: s.name,
+    Email: s.email,
+    Category: s.category,
+    Year: s.year,
+    Course: s.course,
+  }));
+
+  XLSX.utils.sheet_add_json(ws, rows, { origin: "A5" });
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Students");
+  XLSX.writeFile(wb, "Filtered_Students.xlsx");
+};
+
+// Download Word
+const downloadWord = async () => {
+  const tableRows = [
+    new TableRow({
+      children: ["UID", "Name", "Email", "Category", "Year", "Course"].map(
+        (header) =>
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: header, bold: true })] })],
+          })
+      ),
+    }),
+    ...filteredStudents.map(
+      (s) =>
+        new TableRow({
+          children: [
+            s.student_uid,
+            s.name,
+            s.email,
+            s.category,
+            s.year.toString(),
+            s.course,
+          ].map(
+            (val) =>
+              new TableCell({
+                children: [new Paragraph({ children: [new TextRun(val)] })],
+              })
+          ),
+        })
+    ),
+  ];
+
+  const doc = new Document({
+    sections: [
+      {
+        children: [
+          new Paragraph({
+            children: [new TextRun({ text: "PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", bold: true, size: 28 })],
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 200 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: "DEPARTMENT OF COMMERCE", bold: true, size: 24 })],
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 200 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: "Filtered Student Data", bold: true, size: 22 })],
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 400 },
+          }),
+          new Table({ rows: tableRows }),
+        ],
+      },
+    ],
+  });
+
+  const blob = await Packer.toBlob(doc);
+  saveAs(blob, "Filtered_Students.docx");
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
@@ -111,15 +210,27 @@ useEffect(() => {
       <div className="px-20 py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">
-            Filter Students Datas
-          </h2>
-          <button
-            onClick={downloadPDF}
-            className="bg-slate-900 text-white px-6 py-2 rounded-lg font-semibold hover:bg-slate-800 transition"
-          >
-            Download PDF
-          </button>
+          <h2 className="text-2xl font-bold text-slate-800">Filter Students Data</h2>
+          <div className="flex gap-3">
+            <button
+              onClick={downloadPDF}
+              className="bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-800 transition"
+            >
+              PDF
+            </button>
+            <button
+              onClick={downloadExcel}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-500 transition"
+            >
+              Excel
+            </button>
+            <button
+              onClick={downloadWord}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition"
+            >
+              Word
+            </button>
+          </div>
         </div>
 
         {/* Filters */}
@@ -175,17 +286,6 @@ useEffect(() => {
               </option>
             ))}
           </select>
-
-          {/* Hosteller */}
-          {/* <select
-            value={hostellerFilter}
-            onChange={(e) => setHostellerFilter(e.target.value)}
-            className="px-4 py-2 border border-slate-300 rounded-lg w-full shadow-sm"
-          >
-            <option value="">Hosteller: All</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select> */}
         </div>
 
         {/* Table */}
@@ -199,7 +299,6 @@ useEffect(() => {
                 <th className="px-6 py-3 text-center">Category</th>
                 <th className="px-6 py-3 text-center">Year</th>
                 <th className="px-6 py-3 text-center">Course</th>
-                {/* <th className="px-6 py-3 text-center">Hosteller</th> */}
               </tr>
             </thead>
             <tbody>
@@ -215,15 +314,11 @@ useEffect(() => {
                     <td className="px-6 py-3 text-center">{s.category}</td>
                     <td className="px-6 py-3 text-center">{s.year}</td>
                     <td className="px-6 py-3 text-center">{s.course}</td>
-                    {/* <td className="px-6 py-3 text-center">{s.hosteller}</td> */}
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan="7"
-                    className="text-center py-6 text-slate-500 italic"
-                  >
+                  <td colSpan="6" className="text-center py-6 text-slate-500 italic">
                     No students found
                   </td>
                 </tr>

@@ -6,6 +6,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { Document, Packer, Paragraph, TextRun } from "docx";
 
 const ViewSingleStudent = () => {
   const { student_uid } = useParams();
@@ -28,6 +31,35 @@ const ViewSingleStudent = () => {
     fetchStudent();
   }, [backendUrl, student_uid]);
 
+  const getDetailsArray = () => [
+    ["Student UID", student.student_uid],
+    ["Name", student.name],
+    ["Email", student.email],
+    ["DOB", student.dob?.split("T")[0]],
+    ["Father's Name", student.fatherName],
+    ["Father's Occupation", student.fatherOccupation],
+    ["Mother's Name", student.motherName],
+    ["Mother's Occupation", student.motherOccupation],
+    ["Medium of Instruction", student.mediumOfInstruction],
+    ["Marks Scored", student.marksScored],
+    ["Percentage", student.percentage],
+    ["School Name & Place", student.schoolNamePlace],
+    ["Religion", student.religion],
+    ["Nationality", student.nationality],
+    ["Category", student.category],
+    ["Date of Admission", student.dateOfAdmission?.split("T")[0]],
+    ["Date of Leaving", student.dateOfLeaving?.split("T")[0]],
+    ["Aadhaar", student.aadhaar],
+    ["Contact No", student.contactNo],
+    ["Address", student.address],
+    ["Gender", student.gender],
+    ["Course", student.course],
+    ["Year", student.year],
+    ["Blood Group", student.bloodGroup],
+    ["Scholarship Details", student.scholarshipDetails],
+  ].filter(Boolean);
+
+  // PDF Export
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(14);
@@ -39,46 +71,65 @@ const ViewSingleStudent = () => {
     doc.setFontSize(13);
     doc.text("STUDENTS PROFILE", 105, 38, { align: "center" });
 
-    const details = [
-      ["Student UID", student.student_uid],
-      ["Name", student.name],
-      ["Email", student.email],
-      ["DOB", student.dob?.split("T")[0]],
-      ["Father's Name", student.fatherName],
-      ["Father's Occupation", student.fatherOccupation],
-      ["Mother's Name", student.motherName],
-      ["Mother's Occupation", student.motherOccupation],
-      ["Medium of Instruction", student.mediumOfInstruction],
-      ["Marks Scored", student.marksScored],
-      ["Percentage", student.percentage],
-      ["School Name & Place", student.schoolNamePlace],
-      ["Religion", student.religion],
-      ["Nationality", student.nationality],
-      ["Category", student.category],
-      ["Date of Admission", student.dateOfAdmission?.split("T")[0]],
-      ["Date of Leaving", student.dateOfLeaving?.split("T")[0]],
-      ["Aadhaar", student.aadhaar],
-      ["Contact No", student.contactNo],
-      ["Address", student.address],
-      ["Gender", student.gender],
-      ["Course", student.course],
-      ["Year", student.year],
-      ["Blood Group", student.bloodGroup],
-      ["Scholarship Details", student.scholarshipDetails],
-      ["Hosteller", student.hosteller],
-      student.hosteller === "Yes"
-        ? ["Hosteller Detail", student.hostellerDetail]
-        : null,
-    ].filter(Boolean);
-
     autoTable(doc, {
       startY: 45,
-      head: [["Field", "Value"]],
-      body: details,
+      head: [["Details", "Information"]],
+      body: getDetailsArray(),
       theme: "grid",
     });
 
     doc.save(`${student.name}_details.pdf`);
+  };
+
+  // Excel Export
+  const downloadExcel = () => {
+    const ws = XLSX.utils.aoa_to_sheet([["Details", "Information"], ...getDetailsArray()]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Student Details");
+    XLSX.writeFile(wb, `${student.name}_details.xlsx`);
+  };
+
+  // Word Export
+  const downloadWord = async () => {
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE",
+                  bold: true,
+                  size: 28,
+                }),
+              ],
+              alignment: "center",
+            }),
+            new Paragraph({
+              children: [new TextRun("Department of Commerce")],
+              alignment: "center",
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: "STUDENT PROFILE", bold: true })],
+              alignment: "center",
+              spacing: { after: 300 },
+            }),
+            ...getDetailsArray().map(
+              ([field, value]) =>
+                new Paragraph({
+                  children: [
+                    new TextRun({ text: `${field}: `, bold: true }),
+                    new TextRun(value ? String(value) : "—"),
+                  ],
+                })
+            ),
+          ],
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${student.name}_details.docx`);
   };
 
   if (!student) {
@@ -103,14 +154,29 @@ const ViewSingleStudent = () => {
           <span className="font-semibold">{student.name}</span>
         </p>
 
-        {/* Download Button */}
-        <button
-          onClick={downloadPDF}
-          className="mb-6 bg-slate-900 text-white px-4 sm:px-6 py-2 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer text-sm sm:text-base"
-        >
-          Download as PDF
-        </button>
+        {/* Export Buttons */}
+        <div className="flex flex-wrap gap-4 mb-6">
+          <button
+            onClick={downloadPDF}
+            className="bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-800 transition cursor-pointer text-sm"
+          >
+            Download PDF
+          </button>
+          <button
+            onClick={downloadExcel}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-500 transition cursor-pointer text-sm"
+          >
+            Download Excel
+          </button>
+          <button
+            onClick={downloadWord}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition cursor-pointer text-sm"
+          >
+            Download Word
+          </button>
+        </div>
 
+        {/* Student Card */}
         <div className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-4xl mb-10">
           {student.photo && (
             <div className="flex justify-center mb-6">
@@ -123,31 +189,9 @@ const ViewSingleStudent = () => {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-            <Detail label="Student UID" value={student.student_uid} />
-            <Detail label="Name" value={student.name} />
-            <Detail label="Email" value={student.email} />
-            <Detail label="DOB" value={student.dob?.split("T")[0]} />
-            <Detail label="Father's Name" value={student.fatherName} />
-            <Detail label="Father's Occupation" value={student.fatherOccupation} />
-            <Detail label="Mother's Name" value={student.motherName} />
-            <Detail label="Mother's Occupation" value={student.motherOccupation} />
-            <Detail label="Medium of Instruction" value={student.mediumOfInstruction} />
-            <Detail label="Marks Scored" value={student.marksScored} />
-            <Detail label="Percentage" value={student.percentage} />
-            <Detail label="School Name & Place" value={student.schoolNamePlace} />
-            <Detail label="Religion" value={student.religion} />
-            <Detail label="Nationality" value={student.nationality} />
-            <Detail label="Category" value={student.category} />
-            <Detail label="Date of Admission" value={student.dateOfAdmission?.split("T")[0]} />
-            <Detail label="Date of Leaving" value={student.dateOfLeaving?.split("T")[0]} />
-            <Detail label="Aadhaar" value={student.aadhaar} />
-            <Detail label="Contact No" value={student.contactNo} />
-            <Detail label="Address" value={student.address} />
-            <Detail label="Gender" value={student.gender} />
-            <Detail label="Course" value={student.course} />
-            <Detail label="Year" value={student.year} />
-            <Detail label="Blood Group" value={student.bloodGroup} />
-            <Detail label="Scholarship Details" value={student.scholarshipDetails} />
+            {getDetailsArray().map(([label, value], idx) => (
+              <Detail key={idx} label={label} value={value} />
+            ))}
           </div>
         </div>
       </div>
