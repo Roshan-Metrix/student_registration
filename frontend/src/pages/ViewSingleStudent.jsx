@@ -13,25 +13,42 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 const ViewSingleStudent = () => {
   const { student_uid } = useParams();
   const { backendUrl } = useContext(AppContent);
-  const [student, setStudent] = useState(null);
+  const [data, setData] = useState(null);
 
+  // -------- Fetch Student Full Data --------
   useEffect(() => {
-    const fetchStudent = async () => {
+    const fetchData = async () => {
       try {
         const { data } = await axios.get(
           `${backendUrl}/api/roles/viewStudentData/${student_uid}`,
           { withCredentials: true }
         );
-        if (data.success) setStudent(data.student);
-        else toast.error(data.message);
+        if (data.success) {
+          setData(data);
+        } else toast.error(data.message);
       } catch (error) {
         toast.error("Error fetching student: " + error.message);
       }
     };
-    fetchStudent();
+    fetchData();
   }, [backendUrl, student_uid]);
 
-  const getDetailsArray = () => [
+  if (!data)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 flex items-center justify-center">
+        <p className="text-slate-600 text-lg sm:text-xl">
+          Loading student data...
+        </p>
+      </div>
+    );
+
+  const student = data.student;
+  const fees = data.student_fees?.[0] || {};
+  const attendance = data.student_attendance?.[0] || {};
+  const semesters = data.student_semesters?.[0] || {};
+
+  // -------- Helper data builders --------
+  const personalDetails = [
     ["Student UID", student.student_uid],
     ["Name", student.name],
     ["Email", student.email],
@@ -48,7 +65,7 @@ const ViewSingleStudent = () => {
     ["Nationality", student.nationality],
     ["Category", student.category],
     ["Date of Admission", student.dateOfAdmission?.split("T")[0]],
-    ["Date of Leaving", student.dateOfLeaving?.split("T")[0]],
+    ["Date of Leaving", student.dateOfLeaving?.split("T")[0] || "—"],
     ["Aadhaar", student.aadhaar],
     ["Contact No", student.contactNo],
     ["Address", student.address],
@@ -57,101 +74,178 @@ const ViewSingleStudent = () => {
     ["Year", student.year],
     ["Blood Group", student.bloodGroup],
     ["Scholarship Details", student.scholarshipDetails],
-  ].filter(Boolean);
+  ];
 
-  // PDF Export
+  const semesterRows = [...Array(8)].map((_, i) => ({
+    sem: `Semester ${i + 1}`,
+    examFees: semesters[`examfeesSem${i + 1}`] || "—",
+    gpa: semesters[`gpaSem${i + 1}`] || "—",
+    cgpa: semesters[`cgpaSem${i + 1}`] || "—",
+    marksheet: semesters[`marksheetSem${i + 1}`] || "—",
+  }));
+
+  const feesTable = [
+    ["Year 1", fees.feesYear1 || "—"],
+    ["Year 2", fees.feesYear2 || "—"],
+    ["Year 3", fees.feesYear3 || "—"],
+    ["Year 4", fees.feesYear4 || "—"],
+  ];
+
+  const attendanceTable = [
+    ["Sem 1", attendance.attendanceSem1 || "—"],
+    ["Sem 2", attendance.attendanceSem2 || "—"],
+    ["Sem 3", attendance.attendanceSem3 || "—"],
+    ["Sem 4", attendance.attendanceSem4 || "—"],
+    ["Sem 5", attendance.attendanceSem5 || "—"],
+    ["Sem 6", attendance.attendanceSem6 || "—"],
+    ["Sem 7", attendance.attendanceSem7 || "—"],
+    ["Sem 8", attendance.attendanceSem8 || "—"],
+  ];
+
+  // -------- Exports --------
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(14);
-    doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 20, {
-      align: "center",
-    });
+    doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 20, { align: "center" });
     doc.setFontSize(12);
     doc.text("Department of Commerce", 105, 28, { align: "center" });
     doc.setFontSize(13);
-    doc.text("STUDENTS PROFILE", 105, 38, { align: "center" });
+    doc.text("STUDENT FULL PROFILE", 105, 38, { align: "center" });
 
     autoTable(doc, {
       startY: 45,
-      head: [["Details", "Information"]],
-      body: getDetailsArray(),
+      head: [["Field", "Information"]],
+      body: personalDetails,
       theme: "grid",
     });
 
-    doc.save(`${student.name}_details.pdf`);
-  };
-
-  // Excel Export
-  const downloadExcel = () => {
-    const ws = XLSX.utils.aoa_to_sheet([["Details", "Information"], ...getDetailsArray()]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Student Details");
-    XLSX.writeFile(wb, `${student.name}_details.xlsx`);
-  };
-
-  // Word Export
-  const downloadWord = async () => {
-    const doc = new Document({
-      sections: [
-        {
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: "PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE",
-                  bold: true,
-                  size: 28,
-                }),
-              ],
-              alignment: "center",
-            }),
-            new Paragraph({
-              children: [new TextRun("Department of Commerce")],
-              alignment: "center",
-            }),
-            new Paragraph({
-              children: [new TextRun({ text: "STUDENT PROFILE", bold: true })],
-              alignment: "center",
-              spacing: { after: 300 },
-            }),
-            ...getDetailsArray().map(
-              ([field, value]) =>
-                new Paragraph({
-                  children: [
-                    new TextRun({ text: `${field}: `, bold: true }),
-                    new TextRun(value ? String(value) : "—"),
-                  ],
-                })
-            ),
-          ],
-        },
-      ],
+    doc.text("Fees Details", 14, doc.lastAutoTable.finalY + 10);
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 15,
+      head: [["Year", "Fees Amount"]],
+      body: feesTable,
+      theme: "grid",
     });
 
-    const blob = await Packer.toBlob(doc);
-    saveAs(blob, `${student.name}_details.docx`);
+    doc.text("Attendance Details", 14, doc.lastAutoTable.finalY + 10);
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 15,
+      head: [["Semester", "Attendance %"]],
+      body: attendanceTable,
+      theme: "grid",
+    });
+
+    doc.text("Semester Details", 14, doc.lastAutoTable.finalY + 10);
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 15,
+      head: [["Semester", "Exam Fees", "GPA", "CGPA", "Marksheet"]],
+      body: semesterRows.map((s) => [s.sem, s.examFees, s.gpa, s.cgpa, s.marksheet]),
+      theme: "grid",
+    });
+
+    doc.save(`${student.name}_Full_Profile.pdf`);
   };
 
-  if (!student) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 flex items-center justify-center">
-        <p className="text-slate-600 text-lg sm:text-xl">
-          Loading student data...
-        </p>
-      </div>
-    );
-  }
+  const downloadExcel = () => {
+    const wb = XLSX.utils.book_new();
 
+    const sheets = {
+      "Personal Details": personalDetails,
+      "Fees Details": feesTable,
+      "Attendance": attendanceTable,
+      "Semesters": semesterRows.map((s) => [
+        s.sem,
+        s.examFees,
+        s.gpa,
+        s.cgpa,
+        s.marksheet,
+      ]),
+    };
+
+    for (const [name, data] of Object.entries(sheets)) {
+      const ws = XLSX.utils.aoa_to_sheet([["Field", "Value"], ...data]);
+      XLSX.utils.book_append_sheet(wb, ws, name);
+    }
+
+    XLSX.writeFile(wb, `${student.name}_Full_Profile.xlsx`);
+  };
+
+  const downloadWord = async () => {
+    const paragraphs = [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE",
+            bold: true,
+            size: 28,
+          }),
+        ],
+        alignment: "center",
+      }),
+      new Paragraph({
+        children: [new TextRun("Department of Commerce")],
+        alignment: "center",
+      }),
+      new Paragraph({
+        children: [new TextRun({ text: "STUDENT FULL PROFILE", bold: true })],
+        alignment: "center",
+        spacing: { after: 300 },
+      }),
+    ];
+
+    const addSection = (title, arr) => {
+      paragraphs.push(
+        new Paragraph({
+          children: [new TextRun({ text: `\n${title}`, bold: true, size: 24 })],
+        })
+      );
+      arr.forEach(([k, v]) =>
+        paragraphs.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: `${k}: `, bold: true }),
+              new TextRun(v ? String(v) : "—"),
+            ],
+          })
+        )
+      );
+    };
+
+    addSection("Personal Details", personalDetails);
+    addSection("Fees Details", feesTable);
+    addSection("Attendance Details", attendanceTable);
+
+    paragraphs.push(
+      new Paragraph({ children: [new TextRun({ text: "\nSemester Details", bold: true })] })
+    );
+    semesterRows.forEach((s) =>
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: `${s.sem}: `, bold: true }),
+            new TextRun(
+              `Exam Fees: ${s.examFees}, GPA: ${s.gpa}, CGPA: ${s.cgpa}, Marksheet: ${s.marksheet}`
+            ),
+          ],
+        })
+      )
+    );
+
+    const doc = new Document({ sections: [{ children: paragraphs }] });
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${student.name}_Full_Profile.docx`);
+  };
+
+  // -------- UI --------
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
       <NavInsideBar />
       <div className="flex flex-col items-center pt-8 px-4 sm:px-6">
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 text-center">
-          Student Details
+          Student Full Details
         </h2>
         <p className="text-slate-500 mb-6 text-center">
-          Detailed record for{" "}
-          <span className="font-semibold">{student.name}</span>
+          Detailed record for <span className="font-semibold">{student.name}</span>
         </p>
 
         {/* Export Buttons */}
@@ -177,7 +271,7 @@ const ViewSingleStudent = () => {
         </div>
 
         {/* Student Card */}
-        <div className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-4xl mb-10">
+        <div className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-5xl mb-10">
           {student.photo && (
             <div className="flex justify-center mb-6">
               <img
@@ -188,23 +282,97 @@ const ViewSingleStudent = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-            {getDetailsArray().map(([label, value], idx) => (
-              <Detail key={idx} label={label} value={value} />
-            ))}
-          </div>
+          {/* Personal */}
+          <Section title="Personal Details" data={personalDetails} />
+
+          {/* Fees Table */}
+          <TableSection title="Fees Details" headers={["Year", "Fees Amount"]} rows={feesTable} />
+
+          {/* Attendance Table */}
+          <TableSection title="Attendance Details" headers={["Semester", "Attendance %"]} rows={attendanceTable} />
+
+          {/* Semester Table */}
+          <SemesterSection title="Semester Details" data={semesterRows} />
         </div>
       </div>
     </div>
   );
 };
 
-const Detail = ({ label, value }) => (
+// -------- Reusable Components --------
+const Section = ({ title, data }) => (
+  <div className="mb-8">
+    <h3 className="text-lg font-bold text-slate-800 mb-3">{title}</h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+      {data.map(([label, value], i) => (
+        <div key={i}>
+          <p className="text-xs sm:text-sm text-slate-500">{label}</p>
+          <p className="text-sm sm:text-base font-semibold text-slate-800 border-b border-slate-200 pb-1 break-words">
+            {value}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const TableSection = ({ title, headers, rows }) => (
+  <div className="mb-8">
+    <h3 className="text-lg font-bold text-slate-800 mb-3">{title}</h3>
+    <div className="overflow-x-auto">
+      <table className="min-w-full border border-slate-300 text-sm text-slate-700">
+        <thead className="bg-slate-200">
+          <tr>
+            {headers.map((head, idx) => (
+              <th key={idx} className="px-4 py-2 border">
+                {head}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i}>
+              {r.map((cell, j) => (
+                <td key={j} className="border px-4 py-2 text-center">
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const SemesterSection = ({ title, data }) => (
   <div>
-    <p className="text-xs sm:text-sm text-slate-500">{label}</p>
-    <p className="text-sm sm:text-base font-semibold text-slate-800 border-b border-slate-200 pb-1 break-words">
-      {value || "—"}
-    </p>
+    <h3 className="text-lg font-bold text-slate-800 mb-3">{title}</h3>
+    <div className="overflow-x-auto">
+      <table className="min-w-full border border-slate-300 text-sm text-slate-700">
+        <thead className="bg-slate-200">
+          <tr>
+            <th className="px-4 py-2 border">Semester</th>
+            <th className="px-4 py-2 border">Exam Fees</th>
+            <th className="px-4 py-2 border">GPA</th>
+            <th className="px-4 py-2 border">CGPA</th>
+            <th className="px-4 py-2 border">Marksheet</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((s, i) => (
+            <tr key={i}>
+              <td className="border px-4 py-2 text-center">{s.sem}</td>
+              <td className="border px-4 py-2 text-center">{s.examFees}</td>
+              <td className="border px-4 py-2 text-center">{s.gpa}</td>
+              <td className="border px-4 py-2 text-center">{s.cgpa}</td>
+              <td className="border px-4 py-2 text-center">{s.marksheet}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   </div>
 );
 
