@@ -6,15 +6,8 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(),tailwindcss()],
-  build: {
-    outDir: 'dist', 
+   build: {
+    outDir: 'dist',
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    historyApiFallback: true,
-  },
+  publicDir: 'public'
 })
