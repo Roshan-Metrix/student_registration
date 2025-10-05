@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import userAuth from '../middleware/userAuth.js'
-import { allStudentsData, deleteStudent, studentDetail, updateStudentDetail, viewStudentData } from '../controllers/rolesController.js';
+import { allStudentsData, deleteStudent, storeExtraStudentData, studentDetail, updateExtraStudentData, updateStudentDetail, viewStudentData } from '../controllers/rolesController.js';
 // import adminAuth from '../middleware/adminAuth.js';
 
 // multer setup for photo
@@ -20,9 +20,11 @@ const upload = multer({ storage });
 const roleRouter = express.Router();
 
 roleRouter.post('/students',userAuth,upload.single('photo'),studentDetail);
+roleRouter.post('/students/moreData/:student_uid',userAuth,storeExtraStudentData);
 roleRouter.get('/getStudentsData',userAuth,allStudentsData);
 roleRouter.get('/viewStudentData/:student_uid', userAuth, viewStudentData);
-roleRouter.put('/updateStudentData/:student_uid', userAuth,upload.single("photo"), updateStudentDetail);
+roleRouter.put('/updateStudentData/:student_uid', userAuth,upload.single('photo'), updateStudentDetail);
+roleRouter.put('/updateExtraStudentData/:student_uid', userAuth, updateExtraStudentData);
 roleRouter.delete('/deleteStudent/:student_uid', userAuth, deleteStudent);
 
 export default roleRouter;
