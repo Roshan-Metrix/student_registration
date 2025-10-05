@@ -3,10 +3,10 @@ import { Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContentData from './pages/contentDatas'
 import ViewData from './pages/ViewData'
 import PrintData from './pages/PrintData'
 import TotalCalc from './pages/TotalCalc'
+import ContentDatas from './pages/ContentDatas'
 import ViewSingleStudent from './pages/ViewSingleStudent'
 import UpdateStudentData from './pages/UpdateStudentData'
 import YearCategory from './pages/YearCategory'
