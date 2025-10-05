@@ -2,12 +2,12 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Create a MySQL connection pool (better for multiple queries)
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'college_db',
+  host: process.env.DB_HOST ,
+  user: process.env.DB_USER ,
+  password: process.env.DB_PASS ,
+  database: process.env.DB_NAME ,
+  port: process.env.DB_PORT,
   waitForConnections: true,
   connectionLimit: 10, // number of concurrent connections allowed
   queueLimit: 0, // unlimited queued requests
