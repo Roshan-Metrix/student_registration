@@ -217,7 +217,7 @@ export const allStudentsData = async (req, res) => {
     // }
 
     // Fetch all student data
-    const [studentsRows] = await db.execute("SELECT * FROM studentData");
+    const [studentsRows] = await db.execute("SELECT * FROM studentdata");
     if (studentsRows.length === 0) {
       return res.json({ success: false, message: "No student data found" });
     }
@@ -225,7 +225,7 @@ export const allStudentsData = async (req, res) => {
 
     res.json({ success: true, students });
   } catch (error) {
-    console.log("Error in adminAccess controller", error);
+    console.log("Error in allStudentsData controller", error);
     res.json({ success: false, message: error.message });
   }
 };
