@@ -4,14 +4,15 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser';
 import path from "path";
 import { fileURLToPath } from 'url';
-import pool from './config/connection.js';
 import authRouter from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js';
 import roleRouter from './routes/roleRoutes.js';
 import filterRouter from './routes/filterRoutes.js';
+import createDB  from './config/connection.js';
 
 dotenv.config();
 const app = express();
+createDB();
 const port = process.env.PORT || 4000;
 const allowedOrigins = process.env.FRONTEND_URI;
 

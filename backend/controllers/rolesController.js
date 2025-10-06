@@ -1,4 +1,4 @@
-import createDB from "../config/connection.js";
+import createDB  from "../config/connection.js";
 import generateStudentId from "../lib/generateStdID.js";
 
 export const studentDetail = async (req, res) => {
@@ -272,6 +272,121 @@ export const viewStudentData = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
+//   try {
+//     const { student_uid } = req.params;
+
+//     const {
+//       name,
+//       dob,
+//       fatherName,
+//       fatherOccupation,
+//       motherName,
+//       motherOccupation,
+//       mediumOfInstruction,
+//       marksScored,
+//       percentage,
+//       schoolNamePlace,
+//       religion,
+//       nationality,
+//       category,
+//       dateOfAdmission,
+//       dateOfLeaving,
+//       contactNo,
+//       email,
+//       aadhaar,
+//       address,
+//       gender,
+//       course,
+//       year,
+//       bloodGroup,
+//       scholarshipDetails
+//     } = req.body;
+    
+//     const photo = req.file ? req.file.filename : null;
+
+//     const db = (await createDB.getConnection)
+//       ? await createDB.getConnection()
+//       : await createDB();
+
+//     // Check if student exists
+//     const [studentRows] = await db.execute(
+//       "SELECT * FROM studentdata WHERE student_uid = ?",
+//       [student_uid]
+//     );
+//     if (!studentRows.length) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Student not found." });
+//     }
+
+//     // Update student data
+//     const updateQuery = `
+//     UPDATE studentdata SET
+//     name = ?,
+//     dob = ?,
+//     fatherName = ?,
+//     fatherOccupation = ?,
+//     motherName = ?,
+//     motherOccupation = ?,
+//     mediumOfInstruction = ?,
+//     marksScored = ?,
+//     percentage = ?,
+//     schoolNamePlace = ?,
+//     religion = ?,
+//     nationality = ?,
+//     category = ?,
+//     dateOfAdmission = ?,
+//     dateOfLeaving = ?,
+//     contactNo = ?,
+//     email = ?,
+//     aadhaar = ?,
+//     address = ?,
+//     gender = ?,
+//     course = ?,
+//     year = ?,
+//     photo = ?,
+//     bloodGroup = ?,
+//     scholarshipDetails = ?
+//     WHERE student_uid = ?
+// `;
+
+//     const studentParams = [
+//       name ?? null,
+//       dob ?? null,
+//       fatherName ?? null,
+//       fatherOccupation ?? null,
+//       motherName ?? null,
+//       motherOccupation ?? null,
+//       mediumOfInstruction ?? null,
+//       marksScored ?? null,
+//       percentage ?? null,
+//       schoolNamePlace ?? null,
+//       religion ?? null,
+//       nationality ?? null,
+//       category ?? null,
+//       dateOfAdmission ?? null,
+//       dateOfLeaving ?? null,
+//       contactNo ?? null,
+//       email ?? null,
+//       aadhaar ?? null,
+//       address ?? null,
+//       gender ?? null,
+//       course ?? null,
+//       year ?? null,
+//       photo ?? null,
+//       bloodGroup ?? null,
+//       scholarshipDetails ?? null,
+//       student_uid
+//     ];
+
+//     await db.execute(updateQuery, studentParams);
+
+//     res.json({ success: true, message: "Updated Successfully." });
+//   } catch (error) {
+//     console.log("Error in updateStudentDetail controller", error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
 
 export const updateStudentDetail = async (req, res) => {
   try {
@@ -301,16 +416,22 @@ export const updateStudentDetail = async (req, res) => {
       course,
       year,
       bloodGroup,
-      scholarshipDetails
+      scholarshipDetails,
     } = req.body;
-    
+
     const photo = req.file ? req.file.filename : null;
 
-    const db = (await createDB.getConnection)
-      ? await createDB.getConnection()
-      : await createDB();
+    // ✅ Format all date fields to 'YYYY-MM-DD'
+    const formatDate = (date) =>
+      date ? new Date(date).toISOString().split("T")[0] : null;
 
-    // Check if student exists
+    const dobFormatted = formatDate(dob);
+    const doaFormatted = formatDate(dateOfAdmission);
+    const dolFormatted = formatDate(dateOfLeaving);
+
+    const db = await createDB();
+
+    // ✅ Check if student exists
     const [studentRows] = await db.execute(
       "SELECT * FROM studentdata WHERE student_uid = ?",
       [student_uid]
@@ -321,40 +442,40 @@ export const updateStudentDetail = async (req, res) => {
         .json({ success: false, message: "Student not found." });
     }
 
-    // Update student data
+    // ✅ Update query
     const updateQuery = `
-    UPDATE studentdata SET
-    name = ?,
-    dob = ?,
-    fatherName = ?,
-    fatherOccupation = ?,
-    motherName = ?,
-    motherOccupation = ?,
-    mediumOfInstruction = ?,
-    marksScored = ?,
-    percentage = ?,
-    schoolNamePlace = ?,
-    religion = ?,
-    nationality = ?,
-    category = ?,
-    dateOfAdmission = ?,
-    dateOfLeaving = ?,
-    contactNo = ?,
-    email = ?,
-    aadhaar = ?,
-    address = ?,
-    gender = ?,
-    course = ?,
-    year = ?,
-    photo = ?,
-    bloodGroup = ?,
-    scholarshipDetails = ?
-    WHERE student_uid = ?
-`;
+      UPDATE studentdata SET
+        name = ?,
+        dob = ?,
+        fatherName = ?,
+        fatherOccupation = ?,
+        motherName = ?,
+        motherOccupation = ?,
+        mediumOfInstruction = ?,
+        marksScored = ?,
+        percentage = ?,
+        schoolNamePlace = ?,
+        religion = ?,
+        nationality = ?,
+        category = ?,
+        dateOfAdmission = ?,
+        dateOfLeaving = ?,
+        contactNo = ?,
+        email = ?,
+        aadhaar = ?,
+        address = ?,
+        gender = ?,
+        course = ?,
+        year = ?,
+        photo = ?,
+        bloodGroup = ?,
+        scholarshipDetails = ?
+      WHERE student_uid = ?
+    `;
 
-    const studentParams = [
+    const params = [
       name ?? null,
-      dob ?? null,
+      dobFormatted,
       fatherName ?? null,
       fatherOccupation ?? null,
       motherName ?? null,
@@ -366,8 +487,8 @@ export const updateStudentDetail = async (req, res) => {
       religion ?? null,
       nationality ?? null,
       category ?? null,
-      dateOfAdmission ?? null,
-      dateOfLeaving ?? null,
+      doaFormatted,
+      dolFormatted,
       contactNo ?? null,
       email ?? null,
       aadhaar ?? null,
@@ -378,17 +499,18 @@ export const updateStudentDetail = async (req, res) => {
       photo ?? null,
       bloodGroup ?? null,
       scholarshipDetails ?? null,
-      student_uid
+      student_uid,
     ];
 
-    await db.execute(updateQuery, studentParams);
+    await db.execute(updateQuery, params);
 
-    res.json({ success: true, message: "Updated Successfully." });
+    res.json({ success: true, message: "Student updated successfully!" });
   } catch (error) {
-    console.log("Error in studentAccess controller", error);
+    console.error("Error in updateStudentDetail controller:", error);
     res.json({ success: false, message: error.message });
   }
 };
+
 
 export const updateExtraStudentData = async (req, res) => {
   try {
