@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AppContent } from "../../context/AppContext";
+import { Loader2 } from "lucide-react"; // ✅ Spinner icon
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,14 +14,14 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // common loader
+  const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    axios.defaults.withCredentials = true;
-
     try {
-      setLoading(true); // Start loading
+      setLoading(true);
+      axios.defaults.withCredentials = true;
+
       if (state === "Sign Up") {
         const { data } = await axios.post(backendUrl + "/api/auth/register", {
           name,
@@ -49,19 +50,19 @@ const Login = () => {
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   const sendVerificationOtp = async () => {
     try {
       setLoading(true);
+      axios.defaults.withCredentials = true;
+
       const { data } = await axios.post(
-        backendUrl + "/api/auth/send-verify-otp",
-        {},
-        { withCredentials: true }
+        backendUrl + "/api/auth/send-verify-otp"
       );
 
       if (data.success) {
@@ -71,7 +72,7 @@ const Login = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -79,14 +80,12 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 px-4 sm:px-6 relative">
-      {/* 🔄 Loading Overlay */}
-      {loading && (
+      {/* Global Loading Overlay (For OTP Sending) */}
+      {loading && state === "Sign Up" && (
         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-50">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 border-4 border-white border-t-indigo-500 rounded-full animate-spin"></div>
-          <p className="mt-3 sm:mt-4 text-white font-medium text-sm sm:text-base">
-            {state === "Sign Up"
-              ? "Creating your account..."
-              : "Logging in..."}
+          <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-white animate-spin" />
+          <p className="mt-3 text-white font-medium text-sm sm:text-base">
+            Processing...
           </p>
         </div>
       )}
@@ -167,16 +166,19 @@ const Login = () => {
             </p>
           )}
 
-          {/* Submit */}
+          {/* Submit Button */}
           <button
-            className="w-full py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-semibold text-base sm:text-lg shadow-md hover:from-indigo-500 hover:to-indigo-700 transition cursor-pointer"
+            className="w-full py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-semibold text-base sm:text-lg shadow-md hover:from-indigo-500 hover:to-indigo-700 transition flex justify-center items-center gap-2 cursor-pointer"
             disabled={loading}
           >
-            {loading
-              ? state === "Sign Up"
-                ? "Creating..."
-                : "Logging in..."
-              : state}
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              state
+            )}
           </button>
         </form>
 
