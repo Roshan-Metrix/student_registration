@@ -10,12 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
-  verifyOtp VARCHAR(255) DEFAULT '',
-  verifyOtpExpireAt BIGINT UNSIGNED DEFAULT 0,
-  isAccountVerified TINYINT(1) DEFAULT 0,
-  resetOtp VARCHAR(255) DEFAULT '',
-  resetOtpExpireAt BIGINT UNSIGNED DEFAULT 0,
-  role ENUM('student', 'admin') DEFAULT 'student',
+  dept VARCHAR(255),
+  role ENUM('staffs', 'admin') DEFAULT 'staffs',
   createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -45,7 +41,7 @@ CREATE TABLE IF NOT EXISTS studentdata (
    address TEXT,
    gender VARCHAR(10),
    course VARCHAR(100),
-   year INT,
+   year VARCHAR(100),
    photo VARCHAR(255),
    bloodGroup VARCHAR(10),
    scholarshipDetails VARCHAR(100),

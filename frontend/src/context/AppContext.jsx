@@ -16,36 +16,18 @@ export const AppContentProvider = (props) => {
    
    const getUserData = async () => {
     try{
-      const {data} = await axios.get(backendUrl + '/api/user/data');
+      const {data} = await axios.get(backendUrl + '/api/roles/user/data');
       data.success ? setUserData(data.userData) : toast.error(data.message)
     } catch (error){
       toast.error(error.message);
     }
    }
 
-    const getAuthState = async () => {
-      try{
-        const {data} = await axios.get(backendUrl + '/api/auth/is-auth')
-        if(data.success){
-          setIsLoggedin(true)
-          getUserData()
-         } 
-      }catch(error){
-        toast.error(error.message)
-      }
-    }
-
-
- useEffect(() => {
-  getAuthState();
- },[])
-
    const value = {
      backendUrl,
      isLoggedin, setIsLoggedin,
      userData, setUserData,
-     getUserData,
-     getAuthState
+     getUserData
    }
 
     return(

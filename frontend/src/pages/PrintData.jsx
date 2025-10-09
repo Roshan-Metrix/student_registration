@@ -267,10 +267,10 @@ const downloadWord = async () => {
             className="px-4 py-2 border border-slate-300 rounded-lg w-full shadow-sm"
           >
             <option value="">All Years</option>
-            <option value="1">1st Year</option>
-            <option value="2">2nd Year</option>
-            <option value="3">3rd Year</option>
-            <option value="4">4th Year</option>
+            <option value="2025-2029">2025-2029</option>
+            <option value="2026-2030">2026-2030</option>
+            <option value="2027-2031">2027-2031</option>
+            <option value="2028-2032">2028-2032</option>
           </select>
 
           {/* Course */}

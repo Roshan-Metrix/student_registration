@@ -10,10 +10,8 @@ import ContentDatas from './pages/ContentDatas'
 import ViewSingleStudent from './pages/ViewSingleStudent'
 import UpdateStudentData from './pages/UpdateStudentData'
 import YearCategory from './pages/YearCategory'
-import EmailVerify from './pages/authPages/EmailVerify'
-import Login from './pages/authPages/Login';
-import ResetPassword from './pages/authPages/ResetPassword';
 import UserProfile from './pages/UserProfile';
+import Login from './pages/Login';
 
 const App = () => {
   return (
@@ -22,8 +20,6 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Login/>}/>
-        <Route path='/email-verify' element={<EmailVerify/>}/>
-        <Route path='/reset-password' element={<ResetPassword/>}/>
         <Route path='/content' element={<ContentDatas/>}/>
         <Route path='/view' element={<ViewData/>}/>
         <Route path='/print' element={<PrintData/>}/>

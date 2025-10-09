@@ -1,18 +1,18 @@
 import express from 'express';
-import { registerUser,loginUser,logoutUser, sendVerifyOtp, verifyEmail, isAuthenticated, sendResetOtp, resetPassword, deleteUser } from '../controllers/authController.js';
+import { registerUser,loginUser,logoutUser, resetPassword, getAllUsers, deleteUserByAdmin, deleteOwn } from '../controllers/authController.js';
 import userAuth from '../middleware/userAuth.js'
+import adminAuth from '../middleware/adminAuth.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/register', registerUser);
+authRouter.post('/register',userAuth,adminAuth,registerUser);
 authRouter.post('/login', loginUser);
 authRouter.post('/logout', logoutUser);
-authRouter.post('/send-verify-otp', userAuth,sendVerifyOtp);
-authRouter.post('/verify-account', userAuth,verifyEmail);
-authRouter.get('/is-auth', userAuth,isAuthenticated);
-authRouter.post('/send-reset-otp',sendResetOtp);
-authRouter.post('/reset-password', resetPassword);
-authRouter.delete('/user/delete', userAuth,deleteUser);
+authRouter.post('/reset-password',userAuth,resetPassword);
+authRouter.delete('/user/delete', userAuth,deleteOwn);
+authRouter.delete('/user/admin/delete/:id', userAuth,adminAuth,deleteUserByAdmin);
+authRouter.get('/all-users', userAuth,adminAuth,getAllUsers);
+
 
 export default authRouter;
 

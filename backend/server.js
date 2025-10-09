@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import path from "path";
 import { fileURLToPath } from 'url';
 import authRouter from './routes/authRoutes.js'
-import userRouter from './routes/userRoutes.js';
 import roleRouter from './routes/roleRoutes.js';
 import filterRouter from './routes/filterRoutes.js';
 import createDB  from './config/connection.js';
@@ -33,7 +32,6 @@ app.get('/',(req,res) => {
 app.use('/api/upload',express.static(path.join(__dirname, "uploads")));
 
 app.use('/api/auth',authRouter)
-app.use('/api/user',userRouter)
 app.use('/api/roles',roleRouter)
 app.use('/api/filter',filterRouter)
 

@@ -197,24 +197,13 @@ export const storeExtraStudentData = async (req, res) => {
   }
 };
 
-export const allStudentsData = async (req, res) => {
+export const viewAllStudentsData = async (req, res) => {
   try {
     //  const userId = req.userId;
 
     const db = (await createDB.getConnection)
       ? await createDB.getConnection()
       : await createDB();
-
-    // Fetch user by ID
-    // const [userRows] = await db.execute('SELECT * FROM users WHERE id = ?', [userId]);
-    // if (userRows.length === 0) {
-    //     return res.json({ success: false, message: "User not found" });
-    // }
-    // const user = userRows[0];
-
-    // if(user.role !== 'admin'){
-    //     return res.json({ success: false, message: "Access denied. Admins only." });
-    // }
 
     // Fetch all student data
     const [studentsRows] = await db.execute("SELECT * FROM studentdata");
@@ -511,7 +500,6 @@ export const updateStudentDetail = async (req, res) => {
   }
 };
 
-
 export const updateExtraStudentData = async (req, res) => {
   try {
     const { student_uid } = req.params;
@@ -607,6 +595,7 @@ export const updateExtraStudentData = async (req, res) => {
   }
 };
 
+// Delete
 export const deleteStudent = async (req, res) => {
   try {
     const { student_uid } = req.params;
@@ -637,3 +626,51 @@ export const deleteStudent = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// Get LoggedIn User datas
+export const getLoggedInUserData = async (req,res) => {
+    try{
+    const  userId  = req.userId;
+
+   const db = await createDB.getConnection ? await createDB.getConnection() : await createDB();
+
+        // Find user by email
+        const [userRows] = await db.execute('SELECT * FROM users WHERE id = ?', [userId]);
+        if (userRows.length === 0) {
+            return res.json({ success: false, message: 'User not found' });
+        }
+        const user = userRows[0];
+
+    if(!user){
+        return res.json({success:false,message:'User Not Found'});
+    }
+
+  return res.json({
+        success:true,
+        userData:{
+            name: user.name,
+            email:user.email,
+            role: user.role,
+            dept: user.dept
+        }
+    })
+
+    } catch(error){
+      return res.json({success:false,message:error.message});
+    }
+}
+
+export const editFormData = async (req, res) => {
+  try {
+    const { course, year } = req.body;
+    const db = (await createDB.getConnection)
+      ? await createDB.getConnection()
+      : await createDB();
+    await db.execute("ALTER TABLE studentdata MODIFY course = ? WHERE id = 1", [course]);
+    await db.execute("ALTER TABLE studentdata MODIFY year = ? WHERE id = 1", [year]);
+    res.json({ success: true, message: "Form configuration updated successfully." });
+  } catch (error) {
+    console.error("Error in editFormData controller:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}

@@ -27,9 +27,10 @@ const YearCategory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const yearNumber = parseInt(year, 10); // Extract numeric part of year
+        // const yearNumber = parseInt(year, 10); // Extract numeric part of year
         const { data } = await axios.get(
-          `${backendUrl}/api/filter/category/${yearNumber}`,
+          // `${backendUrl}/api/filter/category/${yearNumber}`,
+          `${backendUrl}/api/filter/category/${year}`,
           { withCredentials: true }
         );
         if (data.success) {
