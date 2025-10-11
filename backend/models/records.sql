@@ -119,5 +119,18 @@ CREATE TABLE IF NOT EXISTS student_semesters (
   FOREIGN KEY (student_uid) REFERENCES studentdata(student_uid) ON DELETE CASCADE
 );
 
+-- Table to store distinct courses and years
 
+CREATE TABLE IF NOT EXISTS all_courses(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  course VARCHAR(100) NOT NULL DEFAULT '',
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(course)
+);
 
+CREATE TABLE IF NOT EXISTS all_years(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  year VARCHAR(100) NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(year)
+);

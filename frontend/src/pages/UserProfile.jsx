@@ -36,6 +36,59 @@ const UserProfile = () => {
   const [subTab, setSubTab] = useState("addUser");
   const navigate = useNavigate();
 
+  const [course, setCourse] = useState("");
+  const [year, setYear] = useState("");
+  const [allCourses, setAllCourses] = useState([]);
+  const [allYears, setAllYears] = useState([]);
+
+  const fetchDistinctCoursesAndYears = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setAllCourses(data.courses || []);
+        setAllYears(data.years || []);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch list on mount
+  useEffect(() => {
+    fetchDistinctCoursesAndYears();
+  }, [backendUrl]);
+  const fetchDistinct = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setAllCourses(data.courses || []);
+        setAllYears(data.years || []);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  // Fetch list on mount
+  useEffect(() => {
+    fetchDistinct();
+  }, [backendUrl]);
+
   axios.defaults.withCredentials = true;
 
   // Fetch user data
@@ -177,25 +230,25 @@ const UserProfile = () => {
                 : "text-slate-700 hover:bg-slate-100"
             }`}
           >
-            <UserCircle2 className="w-5 h-5" /> Profile
+            <UserCircle2 className="w-5 h-5" /> Profile Details
           </button>
 
           {/* Edit Info Add Button */}
-           {user?.role === "admin" && (
-          <button
-            onClick={() => {
-              setActiveTab("editInfo");
-              setDropdownOpen(false);
-            }}
-            className={`flex items-center gap-2 py-2 px-4 rounded-lg w-full text-left font-medium transition ${
-              activeTab === "editInfo"
-                ? "bg-indigo-600 text-white"
-                : "text-slate-700 hover:bg-slate-100"
-            }`}
-          >
-            📝 Edit Info Add
-          </button>
-           )}
+          {user?.role === "admin" && (
+            <button
+              onClick={() => {
+                setActiveTab("editInfo");
+                setDropdownOpen(false);
+              }}
+              className={`flex items-center gap-2 py-2 px-4 rounded-lg w-full text-left font-medium transition ${
+                activeTab === "editInfo"
+                  ? "bg-indigo-600 text-white"
+                  : "text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              📝 Courses & Years
+            </button>
+          )}
 
           {/* Manage Users (Dropdown for Admins) */}
           {user?.role === "admin" && (
@@ -295,6 +348,12 @@ const UserProfile = () => {
                         {user.role}
                       </span>
                     </div>
+                    <div className="flex flex-col sm:flex-row justify-between border-b pb-2">
+                      <span className="text-slate-500">Department</span>
+                      <span className="font-semibold text-slate-800 capitalize">
+                        {user.dept}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-8">
@@ -320,10 +379,121 @@ const UserProfile = () => {
             </div>
           )}
 
-          {/* Empty Page for Edit Info Add */}
           {activeTab === "editInfo" && (
-            <div className="flex justify-center items-center h-80 text-slate-500 italic">
-              ✏️ Edit Info Add page coming soon...
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-slate-800 mb-6">
+                📝 Edit Info — Add Course & Year
+              </h2>
+              {/* Add Course/Year Form */}
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!course && !year) {
+                    toast.error(
+                      "Please enter at least one field (course or year)"
+                    );
+                    return;
+                  }
+                  try {
+                    const { data } = await axios.post(
+                      `${backendUrl}/api/roles/admin/add-courses-and-years`,
+                      { course, year },
+                      { withCredentials: true }
+                    );
+                    if (data.success) {
+                      toast.success("Added successfully!");
+                      setCourse("");
+                      setYear("");
+                      fetchDistinctCoursesAndYears(); 
+                    } else toast.error(data.message);
+                  } catch (error) {
+                    toast.error(error.response?.data?.message || error.message);
+                  }
+                }}
+                className="bg-slate-50 p-4 rounded-xl shadow-sm mb-8 space-y-4 max-w-md"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Add Course
+                  </label>
+                  <input
+                    type="text"
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                    placeholder="e.g. B.Sc (Computer Science)"
+                    className="w-full border border-slate-300 rounded-md px-3 py-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Add Year
+                  </label>
+                  <input
+                    type="text"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    placeholder="e.g. 2025-2029"
+                    className="w-full border border-slate-300 rounded-md px-3 py-2"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-500 transition w-full"
+                >
+                  ➕ Add
+                </button>
+              </form>
+
+              {/* Display All Courses & Years */}
+              <div className="bg-slate-50 p-4 rounded-xl shadow-sm">
+                <h3 className="text-lg font-semibold text-slate-700 mb-4">
+                  📚 All Available Courses & Years
+                </h3>
+
+                {loading ? (
+                  <div className="flex justify-center items-center h-32">
+                    <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold text-slate-800 mb-2">
+                        Courses:
+                      </h4>
+                      {allCourses.length > 0 ? (
+                        <ul className="list-disc list-inside text-slate-700 space-y-1">
+                          {allCourses.map((c, idx) => (
+                            <li key={idx}>{c}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-500 text-sm italic">
+                          No courses found.
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-slate-800 mb-2">
+                        Years:
+                      </h4>
+                      {allYears.length > 0 ? (
+                        <ul className="list-disc list-inside text-slate-700 space-y-1">
+                          {allYears.map((y, idx) => (
+                            <li key={idx}>{y}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-500 text-sm italic">
+                          No years found.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

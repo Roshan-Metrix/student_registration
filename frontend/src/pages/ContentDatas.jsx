@@ -75,6 +75,7 @@ const ContentDatas = () => {
   const [studentUID, setStudentUID] = useState(null);
   const [formData, setFormData] = useState({});
   const [courses, setCourses] = useState([]);
+  const [years, setYears] = useState([]);
   const sectionTitles = [
     "Batch Details",
     "Student Information",
@@ -97,12 +98,13 @@ useEffect(() => {
 
       //  If admin -> fetch all distinct courses
       if (role === "admin") {
-        const { data: courseRes } = await axios.get(`${backendUrl}/api/roles/get-distinct`, {
+        const { data: courseRes } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
           withCredentials: true,
         });
 
         if (courseRes.success) {
           setCourses(courseRes.courses || []);
+          setYears(courseRes.years || []);
         } else {
           toast.error(courseRes.message);
         }
@@ -110,7 +112,13 @@ useEffect(() => {
 
       // If staffs -> use their own department
       else if (role === "staffs") {
+        const { data: courseRes } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
+          withCredentials: true,
+        });
+        if (courseRes.success) {
         setCourses([dept]);
+        setYears(courseRes.years || []);
+          } 
       }
 
     } catch (error) {
@@ -227,12 +235,7 @@ useEffect(() => {
               <Select
                 label="Year"
                 name="year"
-                options={[
-                  "2025-2029",
-                  "2026-2030",
-                  "2027-2031",
-                  "2028-2032",
-                ]}
+                options={years}
                 value={formData.year || ""}
                 onChange={handleChange}
                 required

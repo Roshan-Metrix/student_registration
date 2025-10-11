@@ -58,11 +58,15 @@ const filteredStudents = students.filter((student) => {
   const name = student.name || "";
   const uid = student.student_uid || "";
   const email = student.email || "";
+  const year = student.year || "";
+  const category = student.category || "";
 
   return (
     name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     uid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    email.toLowerCase().includes(searchQuery.toLowerCase())
+    email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    year.toString().includes(searchQuery.toLowerCase()) ||
+    category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 });
 

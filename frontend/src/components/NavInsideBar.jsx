@@ -1,10 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContent } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const NavInsideBar = () => {
   const navigate = useNavigate();
+  const { backendUrl } = useContext(AppContent);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [years, setYears] = useState([]);
+
   const dropdownRef = useRef(null);
 
   const navItems = [
@@ -15,7 +22,27 @@ const NavInsideBar = () => {
     { label: "Profile", path: "/profile" },
   ];
 
-  // Close dropdown when clicking outside
+  //  Fetch all distinct years dynamically from backend
+  useEffect(() => {
+    const fetchYears = async () => {
+      try {
+        const { data } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
+          withCredentials: true,
+        });
+        if (data.success) {
+          setYears(data.years || []);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching years:", error.message);
+        toast.error("Failed to fetch years.");
+      }
+    };
+    fetchYears();
+  }, [backendUrl]);
+
+  //  Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,18 +79,24 @@ const NavInsideBar = () => {
               {/* Dropdown */}
               {isDropdownOpen && (
                 <div className="absolute mt-2 w-44 bg-white rounded-lg shadow-lg z-20 border border-slate-200 animate-fade-in">
-                  {["2025-2029", "2026-2030", "2027-2031", "2028-2032"].map((year) => (
-                    <button
-                      key={year}
-                      onClick={() => {
-                        navigate(`/total/${year}`);
-                        setIsDropdownOpen(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-100 transition"
-                    >
-                      {year.replace("Year", " Year")}
-                    </button>
-                  ))}
+                  {years.length > 0 ? (
+                    years.map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => {
+                          navigate(`/total/${year}`);
+                          setIsDropdownOpen(false);
+                        }}
+                        className="block w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-100 transition"
+                      >
+                        {year}
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-slate-500 italic text-sm">
+                      No years available
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -104,19 +137,25 @@ const NavInsideBar = () => {
                 </button>
                 {isDropdownOpen && (
                   <div className="w-full bg-slate-700">
-                    {["2025-2029", "2026-2030", "2027-2031", "2028-2032"].map((year) => (
-                      <button
-                        key={year}
-                        onClick={() => {
-                          navigate(`/total/${year}`);
-                          setIsDropdownOpen(false);
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="block w-full text-left px-6 py-2 text-slate-200 hover:bg-slate-600 transition"
-                      >
-                        {year.replace("Year", " Year")}
-                      </button>
-                    ))}
+                    {years.length > 0 ? (
+                      years.map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => {
+                            navigate(`/total/${year}`);
+                            setIsDropdownOpen(false);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="block w-full text-left px-6 py-2 text-slate-200 hover:bg-slate-600 transition"
+                        >
+                          {year}
+                        </button>
+                      ))
+                    ) : (
+                      <div className="px-6 py-2 text-slate-400 italic text-sm">
+                        No years available
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

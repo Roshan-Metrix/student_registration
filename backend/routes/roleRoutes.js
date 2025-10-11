@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import userAuth from '../middleware/userAuth.js'
-import { deleteStudent, editFormData, getDistinctCoursesAndYears, getLoggedInUserData, storeExtraStudentData, studentDetail, updateExtraStudentData, updateStudentDetail, viewAllStudentsData, viewStudentData } from '../controllers/rolesController.js';
+import { addCoursesAndYears, deleteStudent, getCoursesAndYears, getLoggedInUserData, storeExtraStudentData, studentDetail, updateExtraStudentData, updateStudentDetail, viewAllStudentsData, viewStudentData } from '../controllers/rolesController.js';
 import adminAuth from '../middleware/adminAuth.js';
 
 // multer setup for photo
@@ -27,7 +27,7 @@ roleRouter.put('/updateStudentData/:student_uid', userAuth,upload.single('photo'
 roleRouter.put('/updateExtraStudentData/:student_uid', userAuth, updateExtraStudentData);
 roleRouter.delete('/deleteStudent/:student_uid', userAuth, deleteStudent);
 roleRouter.get('/user/data', userAuth,getLoggedInUserData);
-roleRouter.get('/get-distinct', userAuth,getDistinctCoursesAndYears);
-roleRouter.get('/admin/edit-form', userAuth, adminAuth, editFormData);
+roleRouter.get('/get-courses-years', userAuth,getCoursesAndYears);
+roleRouter.post('/admin/add-courses-and-years', userAuth, adminAuth, addCoursesAndYears);
 
 export default roleRouter;
