@@ -12,11 +12,13 @@ const ViewData = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 10;
   const navigate = useNavigate();
+   axios.defaults.withCredentials = true;
 
   const handleView = (student_uid) => navigate(`/student/${student_uid}`);
   const handleEdit = (student_uid) => navigate(`/student/edit/${student_uid}`);
 
   const handleDelete = async (student_uid) => {
+   
     if (!window.confirm("Are you sure you want to delete this student?")) return;
 
     try {
@@ -52,12 +54,18 @@ const ViewData = () => {
     fetchStudents();
   }, [backendUrl]);
 
-  const filteredStudents = students.filter(
-    (student) =>
-      student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.student_uid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchQuery.toLowerCase())
+const filteredStudents = students.filter((student) => {
+  const name = student.name || "";
+  const uid = student.student_uid || "";
+  const email = student.email || "";
+
+  return (
+    name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    uid.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+});
+
 
   const indexOfLast = currentPage * studentsPerPage;
   const indexOfFirst = indexOfLast - studentsPerPage;

@@ -52,7 +52,7 @@ const NavInsideBar = () => {
               {/* Dropdown */}
               {isDropdownOpen && (
                 <div className="absolute mt-2 w-44 bg-white rounded-lg shadow-lg z-20 border border-slate-200 animate-fade-in">
-                  {["1stYear", "2ndYear", "3rdYear", "4thYear"].map((year) => (
+                  {["2025-2029", "2026-2030", "2027-2031", "2028-2032"].map((year) => (
                     <button
                       key={year}
                       onClick={() => {
@@ -104,7 +104,7 @@ const NavInsideBar = () => {
                 </button>
                 {isDropdownOpen && (
                   <div className="w-full bg-slate-700">
-                    {["1stYear", "2ndYear", "3rdYear", "4thYear"].map((year) => (
+                    {["2025-2029", "2026-2030", "2027-2031", "2028-2032"].map((year) => (
                       <button
                         key={year}
                         onClick={() => {

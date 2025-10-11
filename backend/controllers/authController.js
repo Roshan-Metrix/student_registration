@@ -191,3 +191,31 @@ export const deleteUserByAdmin = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// session
+export const getLoggedInUserData = async (req, res) => {
+  try {
+    const userId = req.userId; // extracted from JWT or session middleware
+
+    const db =
+      (await createDB.getConnection)
+        ? await createDB.getConnection()
+        : await createDB();
+
+    const [userRows] = await db.execute(
+      "SELECT name, email, role, dept FROM users WHERE id = ?",
+      [userId]
+    );
+
+    if (!userRows.length)
+      return res.json({ success: false, message: "User not found" });
+
+    return res.json({
+      success: true,
+      userData: userRows[0],
+    });
+  } catch (error) {
+    console.error("Error fetching user data:", error.message);
+    res.json({ success: false, message: error.message });
+  }
+};

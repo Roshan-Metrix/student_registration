@@ -21,7 +21,7 @@ import {
 
 const YearCategory = () => {
   const { backendUrl } = useContext(AppContent);
-  const { year } = useParams(); // e.g., "1stYear"
+  const { year } = useParams(); 
   const [data, setData] = useState({});
 
   useEffect(() => {

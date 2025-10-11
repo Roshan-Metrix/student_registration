@@ -23,11 +23,29 @@ export const AppContentProvider = (props) => {
     }
    }
 
+    const getAuthState = async () => {
+      try{
+        const {data} = await axios.get(backendUrl + '/api/auth/is-auth')
+        if(data.success){
+          setIsLoggedin(true)
+          getUserData()
+         } 
+      }catch(error){
+        toast.error(error.message)
+      }
+    }
+
+
+ useEffect(() => {
+  getAuthState();
+ },[])
+
    const value = {
      backendUrl,
      isLoggedin, setIsLoggedin,
      userData, setUserData,
-     getUserData
+     getUserData,
+     getAuthState
    }
 
     return(
