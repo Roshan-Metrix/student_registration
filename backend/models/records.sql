@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS studentdata (
    gender VARCHAR(10),
    course VARCHAR(100),
    year VARCHAR(100),
-   photo VARCHAR(255),
+   photo LONGBLOB NULL,
    bloodGroup VARCHAR(10),
    scholarshipDetails VARCHAR(100),
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
