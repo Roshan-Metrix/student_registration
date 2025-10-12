@@ -29,7 +29,7 @@ app.get('/',(req,res) => {
     res.send('API Working');
 })
 
-app.use('/api/upload',express.static(path.join(__dirname, "uploads")));
+// app.use('/api/upload',express.static(path.join(__dirname, "uploads")));
 
 app.use('/api/auth',authRouter)
 app.use('/api/roles',roleRouter)
