@@ -9,7 +9,6 @@ const UpdateStudentData = () => {
   const { student_uid } = useParams();
   const { backendUrl } = useContext(AppContent);
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({});
   const [extraData, setExtraData] = useState({});
   const [newPhoto, setNewPhoto] = useState(null);
@@ -65,44 +64,43 @@ const UpdateStudentData = () => {
   };
 
   // Submit handler
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    // --- Update main student info ---
-    const updatedForm = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key !== "photo" && value !== undefined && value !== null)
-        updatedForm.append(key, value);
-    });
-    if (newPhoto) updatedForm.append("photo", newPhoto);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // --- Update main student info ---
+      const updatedForm = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "photo" && value !== undefined && value !== null)
+          updatedForm.append(key, value);
+      });
+      if (newPhoto) updatedForm.append("photo", newPhoto);
 
-    const mainRes = await axios.put(
-      `${backendUrl}/api/roles/updateStudentData/${student_uid}`,
-      updatedForm,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
+      const mainRes = await axios.put(
+        `${backendUrl}/api/roles/updateStudentData/${student_uid}`,
+        updatedForm,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+
+      // --- Update extra data ---
+      const extraRes = await axios.put(
+        `${backendUrl}/api/roles/updateExtraStudentData/${student_uid}`,
+        extraData,
+        { withCredentials: true }
+      );
+
+      if (mainRes.data.success || extraRes.data.success) {
+        toast.success("Details updated successfully!");
+        navigate("/view");
+      } else {
+        toast.warn("No changes detected or failed to update.");
       }
-    );
-
-    // --- Update extra data ---
-    const extraRes = await axios.put(
-      `${backendUrl}/api/roles/updateExtraStudentData/${student_uid}`,
-      extraData,
-      { withCredentials: true }
-    );
-
-    if (mainRes.data.success || extraRes.data.success) {
-      toast.success("Details updated successfully!");
-      navigate("/view");
-    } else {
-      toast.warn("No changes detected or failed to update.");
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
     }
-  } catch (err) {
-    toast.error(err.response?.data?.message || err.message);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300">
@@ -117,7 +115,7 @@ const handleSubmit = async (e) => {
           className="bg-white shadow-2xl rounded-xl p-8 sm:p-10 w-full max-w-5xl mb-10"
           encType="multipart/form-data"
         >
-          {/* 🏫 Batch Details */}
+          {/*  Batch Details */}
           <h3 className="text-xl font-semibold mb-4 border-b pb-1">
             Batch Details
           </h3>
@@ -150,7 +148,7 @@ const handleSubmit = async (e) => {
             </select>
           </div>
 
-          {/* 👤 Personal Information */}
+          {/* Personal Information */}
           <h3 className="text-xl font-semibold mt-8 mb-4 border-b pb-1">
             Personal Information
           </h3>
@@ -257,17 +255,18 @@ const handleSubmit = async (e) => {
             </select>
           </div>
 
-          {/* 🩸 Photo Upload */}
+          {/* Photo Upload */}
           {formData.photo && (
             <div className="mt-6">
               <p className="text-sm text-slate-600 mb-2">Current Photo:</p>
               <img
-                src={`${backendUrl}/api/upload/${formData.photo}`}
+                src={`data:image/*;base64,${formData.photo}`}
                 alt="student"
                 className="w-32 h-32 object-cover rounded-lg border"
               />
             </div>
           )}
+
           <div className="mt-3">
             <label className="block text-sm font-medium mb-1">
               Upload New Photo
@@ -279,7 +278,7 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-          {/* 💰 Fees Details */}
+          {/* Fees Details */}
           <h3 className="text-xl font-semibold mt-8 mb-3 border-b pb-1">
             Fees Details
           </h3>
@@ -297,7 +296,7 @@ const handleSubmit = async (e) => {
             ))}
           </div>
 
-          {/* 📅 Attendance */}
+          {/* Attendance */}
           <h3 className="text-xl font-semibold mt-8 mb-3 border-b pb-1">
             Attendance Percentage
           </h3>
@@ -315,7 +314,7 @@ const handleSubmit = async (e) => {
             ))}
           </div>
 
-          {/* 📘 Semester Details */}
+          {/* Semester Details */}
           <h3 className="text-xl font-semibold mt-8 mb-3 border-b pb-1">
             Semester Details
           </h3>
@@ -360,7 +359,7 @@ const handleSubmit = async (e) => {
             </table>
           </div>
 
-          {/* ✅ Submit */}
+          {/* Submit */}
           <button
             type="submit"
             className="mt-8 w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-700 transition cursor-pointer"

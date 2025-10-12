@@ -106,7 +106,9 @@ const ViewSingleStudent = () => {
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(14);
-    doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 20, { align: "center" });
+    doc.text("PERUNTHALAIVAR KAMARAJAR ARTS COLLEGE", 105, 20, {
+      align: "center",
+    });
     doc.setFontSize(12);
     doc.text("Department of Commerce", 105, 28, { align: "center" });
     doc.setFontSize(13);
@@ -139,7 +141,13 @@ const ViewSingleStudent = () => {
     autoTable(doc, {
       startY: doc.lastAutoTable.finalY + 15,
       head: [["Semester", "Exam Fees", "GPA", "CGPA", "Marksheet"]],
-      body: semesterRows.map((s) => [s.sem, s.examFees, s.gpa, s.cgpa, s.marksheet]),
+      body: semesterRows.map((s) => [
+        s.sem,
+        s.examFees,
+        s.gpa,
+        s.cgpa,
+        s.marksheet,
+      ]),
       theme: "grid",
     });
 
@@ -152,8 +160,8 @@ const ViewSingleStudent = () => {
     const sheets = {
       "Personal Details": personalDetails,
       "Fees Details": feesTable,
-      "Attendance": attendanceTable,
-      "Semesters": semesterRows.map((s) => [
+      Attendance: attendanceTable,
+      Semesters: semesterRows.map((s) => [
         s.sem,
         s.examFees,
         s.gpa,
@@ -216,7 +224,9 @@ const ViewSingleStudent = () => {
     addSection("Attendance Details", attendanceTable);
 
     paragraphs.push(
-      new Paragraph({ children: [new TextRun({ text: "\nSemester Details", bold: true })] })
+      new Paragraph({
+        children: [new TextRun({ text: "\nSemester Details", bold: true })],
+      })
     );
     semesterRows.forEach((s) =>
       paragraphs.push(
@@ -245,7 +255,8 @@ const ViewSingleStudent = () => {
           Student Full Details
         </h2>
         <p className="text-slate-500 mb-6 text-center">
-          Detailed record for <span className="font-semibold">{student.name}</span>
+          Detailed record for{" "}
+          <span className="font-semibold">{student.name}</span>
         </p>
 
         {/* Export Buttons */}
@@ -272,10 +283,19 @@ const ViewSingleStudent = () => {
 
         {/* Student Card */}
         <div className="bg-white shadow-2xl rounded-xl p-6 sm:p-10 w-full max-w-5xl mb-10">
-          {student.photo && (
+          {/* {student.photo && (
             <div className="flex justify-center mb-6">
               <img
                 src={`${backendUrl}/api/upload/${student.photo}`}
+                alt="Student"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-slate-200"
+              />
+            </div>
+          )} */}
+          {student.photo && (
+            <div className="flex justify-center mb-6">
+              <img
+                src={`data:image/jpeg;base64,${student.photo}`}
                 alt="Student"
                 className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-slate-200"
               />
@@ -286,10 +306,18 @@ const ViewSingleStudent = () => {
           <Section title="Personal Details" data={personalDetails} />
 
           {/* Fees Table */}
-          <TableSection title="Fees Details" headers={["Year", "Fees Amount"]} rows={feesTable} />
+          <TableSection
+            title="Fees Details"
+            headers={["Year", "Fees Amount"]}
+            rows={feesTable}
+          />
 
           {/* Attendance Table */}
-          <TableSection title="Attendance Details" headers={["Semester", "Attendance %"]} rows={attendanceTable} />
+          <TableSection
+            title="Attendance Details"
+            headers={["Semester", "Attendance %"]}
+            rows={attendanceTable}
+          />
 
           {/* Semester Table */}
           <SemesterSection title="Semester Details" data={semesterRows} />
