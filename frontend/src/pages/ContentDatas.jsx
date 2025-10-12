@@ -84,51 +84,59 @@ const ContentDatas = () => {
     "Semester Table",
   ];
 
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      // Fetch user info
-      const { data: userRes } = await axios.get(`${backendUrl}/api/roles/user/data`, {
-        withCredentials: true,
-      });
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        // Fetch user info
+        const { data: userRes } = await axios.get(
+          `${backendUrl}/api/roles/user/data`,
+          {
+            withCredentials: true,
+          }
+        );
 
-      if (!userRes.success) return toast.error(userRes.message);
+        if (!userRes.success) return toast.error(userRes.message);
 
-      const { role, dept } = userRes.userData;
+        const { role, dept } = userRes.userData;
 
-      //  If admin -> fetch all distinct courses
-      if (role === "admin") {
-        const { data: courseRes } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
-          withCredentials: true,
-        });
+        //  If admin -> fetch all distinct courses
+        if (role === "admin") {
+          const { data: courseRes } = await axios.get(
+            `${backendUrl}/api/roles/get-courses-years`,
+            {
+              withCredentials: true,
+            }
+          );
 
-        if (courseRes.success) {
-          setCourses(courseRes.courses || []);
-          setYears(courseRes.years || []);
-        } else {
-          toast.error(courseRes.message);
+          if (courseRes.success) {
+            setCourses(courseRes.courses || []);
+            setYears(courseRes.years || []);
+          } else {
+            toast.error(courseRes.message);
+          }
         }
+
+        // If staffs -> use their own department
+        else if (role === "staffs") {
+          const { data: courseRes } = await axios.get(
+            `${backendUrl}/api/roles/get-courses-years`,
+            {
+              withCredentials: true,
+            }
+          );
+          if (courseRes.success) {
+            setCourses([dept]);
+            setYears(courseRes.years || []);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        toast.error("Failed to load courses");
       }
+    };
 
-      // If staffs -> use their own department
-      else if (role === "staffs") {
-        const { data: courseRes } = await axios.get(`${backendUrl}/api/roles/get-courses-years`, {
-          withCredentials: true,
-        });
-        if (courseRes.success) {
-        setCourses([dept]);
-        setYears(courseRes.years || []);
-          } 
-      }
-
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-      toast.error("Failed to load courses");
-    }
-  };
-
-  fetchUser();
-}, [backendUrl]);
+    fetchUser();
+  }, [backendUrl]);
 
   // Input handler
   const handleChange = (e) => {
@@ -375,11 +383,12 @@ useEffect(() => {
                 onChange={handleChange}
               />
               <Select
-                label="Gender"
+                label="Gender *"
                 name="gender"
                 value={formData.gender || ""}
                 onChange={handleChange}
                 options={["Male", "Female"]}
+                required
               />
               <Select
                 label="Category *"
@@ -394,16 +403,7 @@ useEffect(() => {
                 name="bloodGroup"
                 value={formData.bloodGroup || ""}
                 onChange={handleChange}
-                options={[
-                  "A+",
-                  "A-",
-                  "B+",
-                  "B-",
-                  "O+",
-                  "O-",
-                  "AB+",
-                  "AB-",
-                ]}
+                options={["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"]}
               />
               <Input
                 label="Scholarship Details"
@@ -415,11 +415,20 @@ useEffect(() => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Upload Photo
                 </label>
-                <input
+                {/*   <input
                   type="file"
                   name="photo"
                   accept="image/*"
                   onChange={handleChange}
+                /> */}
+                <input
+                  type="file"
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) setFormData((prev) => ({ ...prev, photo: file }));
+                  }}
                 />
               </div>
             </div>
@@ -431,7 +440,10 @@ useEffect(() => {
               <table className="w-full border border-slate-300 rounded-lg overflow-hidden">
                 <thead className="bg-slate-200">
                   <tr>
-                    <th colSpan={4} className="text-left px-4 py-2 font-semibold">
+                    <th
+                      colSpan={4}
+                      className="text-left px-4 py-2 font-semibold"
+                    >
                       Academic Year Fees
                     </th>
                   </tr>
@@ -467,7 +479,10 @@ useEffect(() => {
               <table className="w-full border border-slate-300 rounded-lg overflow-hidden">
                 <thead className="bg-slate-200">
                   <tr>
-                    <th colSpan={8} className="text-left px-4 py-2 font-semibold">
+                    <th
+                      colSpan={8}
+                      className="text-left px-4 py-2 font-semibold"
+                    >
                       Attendance Percentage (Semester-wise)
                     </th>
                   </tr>
@@ -523,11 +538,15 @@ useEffect(() => {
                       {[...Array(8)].map((_, semIdx) => (
                         <td key={semIdx} className="px-4 py-2 border-r">
                           <Input
-                            name={`${desc.replace(/\s/g, "").toLowerCase()}Sem${semIdx + 1}`}
+                            name={`${desc.replace(/\s/g, "").toLowerCase()}Sem${
+                              semIdx + 1
+                            }`}
                             type={desc === "Exam Fees" ? "number" : "text"}
                             value={
                               formData[
-                                `${desc.replace(/\s/g, "").toLowerCase()}Sem${semIdx + 1}`
+                                `${desc.replace(/\s/g, "").toLowerCase()}Sem${
+                                  semIdx + 1
+                                }`
                               ] || ""
                             }
                             onChange={handleChange}
