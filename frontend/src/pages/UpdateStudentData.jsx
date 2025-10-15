@@ -96,6 +96,7 @@ const UpdateStudentData = () => {
         navigate("/view");
       } else {
         toast.warn("No changes detected or failed to update.");
+        toast.error(mainRes.data.message || extraRes.data.message || "Update failed.");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || err.message);
