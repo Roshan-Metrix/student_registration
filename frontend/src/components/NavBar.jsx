@@ -38,7 +38,7 @@ const NavBar = () => {
         onClick={() => navigate("/")}
       >
         <p className="text-white font-semibold text-xl sm:text-2xl">
-          P.K Arts College
+          Students Mgmt.
         </p>
       </div>
 

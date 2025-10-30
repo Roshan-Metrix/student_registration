@@ -26,7 +26,7 @@ const Header = () => {
 
       {/* Title */}
       <h2 className="text-2xl sm:text-3xl font-semibold mb-4">
-        Welcome To Student Management
+        Welcome To Students Management System
       </h2>
 
       {/* Subtitle */}

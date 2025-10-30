@@ -60,7 +60,7 @@ const NavInsideBar = () => {
         onClick={() => navigate("/")}
         className="text-white text-2xl font-bold tracking-wide cursor-pointer"
       >
-        P.K Arts College
+        Students Mgmt.
       </div>
 
       {/* Desktop Menu */}
