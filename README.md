@@ -58,6 +58,10 @@ A comprehensive Student Management System with full authentication, designed to 
     cd ../backend
     npm install
     ```
+Or,
+```bash
+   docker build -t student-management-system .
+```
 
 3. Configure environment variables in `backend/.env` and `frontend/.env`.
 
@@ -65,6 +69,10 @@ A comprehensive Student Management System with full authentication, designed to 
     ```bash
     npm start
     ```
+Or,
+```bash
+   docker run -p 3000:3000 student-management-system
+```
 
 5. Start the frontend app:
     ```bash
